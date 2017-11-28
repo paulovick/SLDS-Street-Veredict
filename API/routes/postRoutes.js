@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 
 var postService = require('../services/postService')
+var postMapper = require('../mappers/postMapper')
 
 // MIDDLEWARES
 
@@ -9,6 +10,7 @@ router.use('/', (req, res, next) => {
     req.locals = {}
     req.locals.params = req.params
     req.locals.body = req.body
+    req.locals.query = req.query
 
     next()
 })
@@ -26,9 +28,11 @@ router.use('/:postId', (req, res, next) => {
 // ROUTES
 
 router.get('/', (req, res) => {
-    postService.getAll(function(err, posts){
+    var filter = postMapper.convertFilter(req.locals.query)
+    postService.getByFilter(filter, function(err, posts) {
         if (err) {
-            res.status(500).send(err)
+            res.status(500).send('Error getting posts')
+            return
         }
         var result = {
             values: posts
@@ -39,27 +43,13 @@ router.get('/', (req, res) => {
 
 router.get('/:postId', (req, res) => {
     var postId = req.locals.params.postId
-    var filter = {
-        id: postId
-    }
-    postService.getByFilter(filter, function(err, postResponse) {
+    
+    postService.getById(postId, function(err, postResponse) {
         if (err) {
             res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
             return
         }
         res.json(postResponse)
-    })
-})
-
-router.put('/:postId', (req, res) => {
-    var postId = req.locals.params.postId
-    var postRequest = req.locals.body
-    postService.update(postId, postRequest, function(err, post) {
-        if (err) {
-            res.status(500).send('Error updating post')
-            return;
-        }
-        res.json(post)
     })
 })
 
@@ -73,6 +63,18 @@ router.post('/', (req, res) => {
         }
 
         res.status(201).json(postResponse)
+    })
+})
+
+router.put('/:postId', (req, res) => {
+    var postId = req.locals.params.postId
+    var postRequest = req.locals.body
+    postService.update(postId, postRequest, function(err, post) {
+        if (err) {
+            res.status(500).send('Error updating post')
+            return;
+        }
+        res.json(post)
     })
 })
 

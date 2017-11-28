@@ -19,15 +19,25 @@ postService.getAll = function(callback) {
     })
 }
 
-postService.getByFilter = function(filter, callback) {
-    var filterDto = postMapper.convertFilter(filter)
-    Post.findOne(filterDto).exec(function(err, post) {
+postService.getById = function(postId, callback) {
+    Post.findOne({'_id':postId}, function(err, post) {
         if (err || post === null) {
             callback(err)
             return
         }
         var postResponse = postMapper.convertResponse(post)
         callback(null, postResponse)
+    })
+}
+
+postService.getByFilter = function(filter, callback) {
+    filter.exec(function(err, posts) {
+        if (err || posts === null) {
+            callback(err)
+            return
+        }
+        var result = posts.map((post) => postMapper.convertResponse(post))
+        callback(null, result)
     })
 }
 

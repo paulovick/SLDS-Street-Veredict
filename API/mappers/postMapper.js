@@ -36,10 +36,27 @@ postMapper.convertResponse = function(post) {
     return result;
 }
 
-postMapper.convertFilter = function(filter) {
-    var result = {
-        _id: filter.id
+postMapper.convertFilter = function(query) {
+    var findElement = {}
+
+    if (query.title) {
+        var title = query.title.replace('+', ' ')
+        findElement.title = {
+            '$regex': title
+        }
     }
+
+    var result = Post.find(findElement)
+
+    if (query.ids) {
+        var ids = query.ids.split(',')
+        result = result.where('_id').in(ids)
+    }
+
+    if (query.type) {
+        result = result.where('type').equals(query.type)
+    }
+
     return result
 }
 
