@@ -10,6 +10,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 var postsRouter = require('./routes/postRoutes')
 app.use('/posts', postsRouter)
 
+var authorsRouter = require('./routes/authorRoutes')
+app.use('/authors', authorsRouter)
+
 app.listen(3000, () => {
     console.log("Listening to port 3000!")
 })
