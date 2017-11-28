@@ -7,21 +7,18 @@ mongoose.connect('mongodb://streetveredict:12345678@ds123136.mlab.com:23136/stre
 
 var Schema = mongoose.Schema
 
-var PostSchema = new Schema({
+var AuthorSchema = new Schema({
     _id: Number,
     type: String,
-    title: String,
+    name: String,
     createdAt: { type: Date, default: Date.now },
     
-    // Post Full
-    author: String,
-    content: String,
+    // Author Full
 
-    // Post Link
-    source: String,
+    // Author Link
     link: String
 }, {
     _id: false
 })
 
-module.exports = mongoose.model('Post', PostSchema)
+module.exports = mongoose.model('Author', AuthorSchema)
