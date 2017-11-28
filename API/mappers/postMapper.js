@@ -36,4 +36,11 @@ postMapper.convertResponse = function(post) {
     return result;
 }
 
+postMapper.convertFilter = function(filter) {
+    var result = {
+        _id: filter.id
+    }
+    return result
+}
+
 module.exports = postMapper

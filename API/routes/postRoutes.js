@@ -39,8 +39,16 @@ router.get('/', (req, res) => {
 
 router.get('/:postId', (req, res) => {
     var postId = req.locals.params.postId
-    var result = posts.filter((post) => post.id == postId)
-    res.json(result)
+    var filter = {
+        id: postId
+    }
+    postService.getByFilter(filter, function(err, postResponse) {
+        if (err) {
+            res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
+            return
+        }
+        res.json(postResponse)
+    })
 })
 
 router.put('/:postId', (req, res) => {

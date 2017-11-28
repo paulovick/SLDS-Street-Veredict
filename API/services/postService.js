@@ -19,6 +19,18 @@ postService.getAll = function(callback) {
     })
 }
 
+postService.getByFilter = function(filter, callback) {
+    var filterDto = postMapper.convertFilter(filter)
+    Post.findOne(filterDto).exec(function(err, post) {
+        if (err || post === null) {
+            callback(err)
+            return
+        }
+        var postResponse = postMapper.convertResponse(post)
+        callback(null, postResponse)
+    })
+}
+
 postService.create = function(postRequest, callback) {
     getId(function(postId) {
         var post = postMapper.convertRequest(postRequest)
@@ -62,13 +74,18 @@ var getId = function(callback) {
     Post.find({}).sort('_id').exec(function(err, members) {
         var id = 0
         for(var i = 0; i < members.length; i++) {
-            if (members[i]._doc._id > id) {
+            while (id < members[i]._doc._id) {
+                id += 1
+            }
+
+            if (id > members[i]._doc._id) {
                 callback(id)
-                break
-            } else if (members[i]._doc._id === id) {
+                return
+            } else {
                 id += 1
             }
         }
+        callback(id)
     })
 }
 
