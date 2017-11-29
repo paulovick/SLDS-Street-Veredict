@@ -17,7 +17,7 @@ var PostSchema = new Schema({
     author: String,
     content: String,
 
-    // Post Link
+    // Post Extended
     source: String,
     link: String
 }, {
