@@ -56,13 +56,20 @@ router.get('/:authorId', (req, res) => {
 router.post('/', (req, res) => {
     var authorRequest = req.locals.body
     
-    authorService.create(authorRequest, function(err, authorResponse) {
+    authorService.create(authorRequest, function(err, author) {
         if (err) {
             res.status(500).send('Error creating author')
-            return;
+            return
         }
 
-        res.status(201).json(authorResponse)
+        authorMapper.convertResponse(author, function(err, authorResponse) {
+            if (err) {
+                res.status(500).send('Error creating author')
+                return
+            }
+
+            res.status(201).json(authorResponse)
+        })
     })
 })
 

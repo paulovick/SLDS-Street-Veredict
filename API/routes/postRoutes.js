@@ -34,35 +34,51 @@ router.get('/', (req, res) => {
             res.status(500).send('Error getting posts')
             return
         }
-        var result = {
-            values: posts
-        }
-        res.json(result)
+        postMapper.convertResponses(posts, function(err, postResponses) {
+            if (err) {
+                res.status(500).send('Error mapping posts')
+                return
+            }
+            var result = {
+                values: postResponses
+            }
+            res.json(result)
+        })
     })
 })
 
 router.get('/:postId', (req, res) => {
     var postId = req.locals.params.postId
     
-    postService.getById(postId, function(err, postResponse) {
+    postService.getById(postId, function(err, post) {
         if (err) {
-            res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
+            res.status(404).send('Error getting post with id {0}'.replace('{0}',postId))
             return
         }
-        res.json(postResponse)
+        postMapper.convertResponse(post, function(err, postResponse) {
+            if (err) {
+                res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
+            }
+            res.json(postResponse)
+        })
     })
 })
 
 router.post('/', (req, res) => {
     var postRequest = req.locals.body
     
-    postService.create(postRequest, function(err, postResponse) {
+    postService.create(postRequest, function(err, post) {
         if (err) {
             res.status(500).send('Error creating post')
             return;
         }
 
-        res.status(201).json(postResponse)
+        postMapper.convertResponse(post, function(err, postResponse) {
+            if (err) {
+                res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
+            }
+            res.json(postResponse)
+        })
     })
 })
 
@@ -74,7 +90,13 @@ router.put('/:postId', (req, res) => {
             res.status(500).send('Error updating post')
             return;
         }
-        res.json(post)
+        postMapper.convertResponse(post, function(err, postResponse) {
+            if (err) {
+                res.status(500).send('Error mapping post')
+                return
+            }
+            res.json(postResponse)
+        })
     })
 })
 
