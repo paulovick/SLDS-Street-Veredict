@@ -74,7 +74,8 @@ var convertPostResponse = function(postObj) {
     var post = postObj._doc
     var result = {
         id: post._id,
-        type: post.type
+        type: post.type,
+        createdAt: post.createdAt
     }
 
     if (post.type === 'full') {

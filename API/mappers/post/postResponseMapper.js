@@ -51,7 +51,7 @@ postMapper.convertResponses = function(postObjs, callback) {
                 title: post.title,
                 type: post.type,
                 author: authorResponse,
-                createdAt: createdAd
+                createdAt: post.createdAt
             }
         
             if (post.type === 'full') {
@@ -72,7 +72,8 @@ var convertAuthorResponse = function(authorObj) {
     var result = {
         id: author._id,
         type: author.type,
-        name: author.name
+        name: author.name,
+        createdAt: author.createdAt
     }
 
     if (author.type === 'full') {
