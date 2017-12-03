@@ -1,8 +1,9 @@
 var express = require('express')
 var router = express.Router()
 
-var authorService = require('../services/authorService')
-var authorMapper = require('../mappers/authorMapper')
+var authorService = require('../services/author/authorService')
+var authorResponseMapper = require('../mappers/author/authorResponseMapper')
+var authorFilterMapper = require('../mappers/author/authorFilterMapper')
 
 // MIDDLEWARES
 
@@ -28,28 +29,40 @@ router.use('/:authorId', (req, res, next) => {
 // ROUTES
 
 router.get('/', (req, res) => {
-    var filter = authorMapper.convertFilter(req.locals.query)
+    var filter = authorFilterMapper.convertFilter(req.locals.query)
     authorService.getByFilter(filter, function(err, authors) {
         if (err) {
             res.status(500).send('Error getting authors')
             return
         }
-        var result = {
-            values: authors
-        }
-        res.json(result)
+        authorResponseMapper.convertResponses(authors, function(err, authorResponses) {
+            var result = {
+                values: authorResponses
+            }
+            res.json(result)
+        })
     })
 })
 
 router.get('/:authorId', (req, res) => {
     var authorId = req.locals.params.authorId
     
-    authorService.getById(authorId, function(err, authorResponse) {
+    authorService.getById(authorId, function(err, author) {
         if (err) {
             res.status(500).send('Error getting post with id {0}'.replace('{0}',authorId))
             return
         }
-        res.json(authorResponse)
+        if (author === null) {
+            res.status(404).send('Author not found')
+            return
+        }
+        authorResponseMapper.convertResponse(author, function(err, authorResponse) {
+            if (err) {
+                res.status(500).send('Error getting post with id {0}'.replace('{0}',authorId))
+                return
+            }
+            res.json(authorResponse)            
+        })
     })
 })
 
@@ -62,7 +75,7 @@ router.post('/', (req, res) => {
             return
         }
 
-        authorMapper.convertResponse(author, function(err, authorResponse) {
+        authorResponseMapper.convertResponse(author, function(err, authorResponse) {
             if (err) {
                 res.status(500).send('Error creating author')
                 return
@@ -76,12 +89,18 @@ router.post('/', (req, res) => {
 router.put('/:authorId', (req, res) => {
     var authorId = req.locals.params.authorId
     var authorRequest = req.locals.body
-    authorService.update(authorId, authorRequest, function(err, authorResponse) {
+    authorService.update(authorId, authorRequest, function(err, author) {
         if (err) {
             res.status(500).send('Error updating author')
-            return;
+            return
         }
-        res.json(authorResponse)
+        authorResponseMapper.convertResponse(author, function(err, authorResponse) {
+            if (err) {
+                res.status(500).send('Error updating author')
+                return
+            }
+            res.json(authorResponse)
+        })
     })
 })
 

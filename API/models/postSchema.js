@@ -11,7 +11,7 @@ var PostSchema = new Schema({
     _id: Number,
     type: String,
     title: String,
-    authorId: Number,
+    authorId: { type: Number, ref: 'Author' },
     createdAt: { type: Date, default: Date.now },
     
     // Post Full

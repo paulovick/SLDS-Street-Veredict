@@ -1,8 +1,8 @@
-var Post = require('../models/postSchema')
-var postMapper = require('../mappers/postMapper')
+var Post = require('../../models/postSchema')
+var postRequestMapper = require('../../mappers/post/postRequestMapper')
 
-var baseService = new require('./baseService')()
-baseService.init(Post, postMapper)
+var baseService = new require('../baseService')()
+baseService.init(Post, postRequestMapper)
 
 var postService = {}
 

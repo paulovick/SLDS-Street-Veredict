@@ -1,8 +1,9 @@
 var express = require('express')
 var router = express.Router()
 
-var postService = require('../services/postService')
-var postMapper = require('../mappers/postMapper')
+var postService = require('../services/post/postService')
+var postResponseMapper = require('../mappers/post/postResponseMapper')
+var postFilterMapper = require('../mappers/post/postFilterMapper')
 
 // MIDDLEWARES
 
@@ -28,13 +29,13 @@ router.use('/:postId', (req, res, next) => {
 // ROUTES
 
 router.get('/', (req, res) => {
-    var filter = postMapper.convertFilter(req.locals.query)
+    var filter = postFilterMapper.convertFilter(req.locals.query)
     postService.getByFilter(filter, function(err, posts) {
         if (err) {
             res.status(500).send('Error getting posts')
             return
         }
-        postMapper.convertResponses(posts, function(err, postResponses) {
+        postResponseMapper.convertResponses(posts, function(err, postResponses) {
             if (err) {
                 res.status(500).send('Error mapping posts')
                 return
@@ -52,10 +53,14 @@ router.get('/:postId', (req, res) => {
     
     postService.getById(postId, function(err, post) {
         if (err) {
-            res.status(404).send('Error getting post with id {0}'.replace('{0}',postId))
+            res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
             return
         }
-        postMapper.convertResponse(post, function(err, postResponse) {
+        if (post === null) {
+            res.status(404).send('Post not found')
+            return
+        }
+        postResponseMapper.convertResponse(post, function(err, postResponse) {
             if (err) {
                 res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
             }
@@ -73,7 +78,7 @@ router.post('/', (req, res) => {
             return;
         }
 
-        postMapper.convertResponse(post, function(err, postResponse) {
+        postResponseMapper.convertResponse(post, function(err, postResponse) {
             if (err) {
                 res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
             }
@@ -90,7 +95,7 @@ router.put('/:postId', (req, res) => {
             res.status(500).send('Error updating post')
             return;
         }
-        postMapper.convertResponse(post, function(err, postResponse) {
+        postResponseMapper.convertResponse(post, function(err, postResponse) {
             if (err) {
                 res.status(500).send('Error mapping post')
                 return

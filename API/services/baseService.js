@@ -3,11 +3,11 @@ var baseService = function() {
     _this = {}
 
     var entitySchema = null
-    var entityMapper = null
+    var entityRequestMapper = null
 
-    _this.init = function(schema, mapper) {
+    _this.init = function(schema, requestMapper) {
         entitySchema = schema
-        entityMapper = mapper
+        entityRequestMapper = requestMapper
     }
     
     _this.getAll = function(callback) {
@@ -22,7 +22,7 @@ var baseService = function() {
     
     _this.getById = function(entityId, callback) {
         entitySchema.findOne({'_id':entityId}, function(err, entity) {
-            if (err || entity === null) {
+            if (err) {
                 callback(err)
                 return
             }
@@ -42,7 +42,7 @@ var baseService = function() {
     
     _this.create = function(entityRequest, callback) {
         _this.getId(entitySchema, function(entityId) {
-            var entity = entityMapper.convertRequest(entityRequest)
+            var entity = entityRequestMapper.convertRequest(entityRequest)
             entity._id = entityId
             entity.save(function(err) {
                 if (err) {
@@ -55,7 +55,7 @@ var baseService = function() {
     }
     
     _this.update = function(entityId, entityRequest, callback) {
-        var entity = entityMapper.convertRequest(entityRequest)._doc
+        var entity = entityRequestMapper.convertRequest(entityRequest)._doc
         entity._id = entityId
         var query = { '_id' : entityId }
         entitySchema.findOneAndUpdate(query, entity, {upsert: true}, function(err, updatedEntity) {

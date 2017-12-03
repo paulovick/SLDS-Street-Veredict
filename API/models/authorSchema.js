@@ -11,6 +11,7 @@ var AuthorSchema = new Schema({
     _id: Number,
     type: String,
     name: String,
+    postIds: [{ type: Number, ref: 'Post'}],
     createdAt: { type: Date, default: Date.now },
     
     // Author Full
