@@ -34,12 +34,17 @@ authorResponseMapper.convertResponses = function(authorObjs, callback) {
         }
         convertPostResponses(posts, function(err, postResponses) {
             var results = authors.map((author) => {
-                var postResponses = posts.filter((postResponse) => postResponse.authorId === author._id)
+                var authorPostResponses = postResponses.filter((postResponse) => postResponse.authorId === author._id)
+                                            .map((postResponse) => {
+                                                var result = cloneObject(postResponse)
+                                                delete postResponse.authorId
+                                                return result
+                                            })
                 var result = {
                     id: author._id,
                     type: author.type,
                     name: author.name,
-                    posts: postResponses,
+                    posts: authorPostResponses,
                     createdAt: author.createdAt
                 }
     
@@ -75,6 +80,7 @@ var convertPostResponses = function(postObjs, callback) {
                 id: post._id,
                 title: post.title,
                 type: post.type,
+                authorId: post.authorId,
                 topic: topicResponse,
                 createdAt: post.createdAt
             }
@@ -100,6 +106,15 @@ var convertTopicResponse = function(topicObj) {
     }
 
     return result
+}
+
+var cloneObject = function(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
 }
 
 module.exports = authorResponseMapper
