@@ -1,8 +1,8 @@
-var Author = require('../../models/authorSchema')
+var Topic = require('../../models/topicSchema')
 
-var authorFilterMapper = {}
+var topicFilterMapper = {}
 
-authorFilterMapper.convertFilter = function(query) {
+topicFilterMapper.convertFilter = function(query) {
     var findElement = {}
 
     if (query.name) {
@@ -12,7 +12,7 @@ authorFilterMapper.convertFilter = function(query) {
         }
     }
 
-    var result = Author.find(findElement)
+    var result = Topic.find(findElement)
 
     if (query.ids) {
         var ids = []
@@ -24,11 +24,7 @@ authorFilterMapper.convertFilter = function(query) {
         result = result.where('_id').in(ids)
     }
 
-    if (query.type) {
-        result = result.where('type').equals(query.type)
-    }
-
     return result
 }
 
-module.exports = authorFilterMapper
+module.exports = topicFilterMapper
