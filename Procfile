@@ -1,3 +1,3 @@
 api: npm install && node app.js
-web: node web.js
-bo: node bo.js
+bo: npm install && npm run build && npm start
+web: npm install && npm run build && npm start
