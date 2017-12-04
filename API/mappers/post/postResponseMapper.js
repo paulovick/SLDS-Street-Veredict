@@ -8,7 +8,16 @@ var topicFilterMapper = require('../topic/topicFilterMapper')
 var postResponseMapper = {}
 
 postResponseMapper.convertResponse = function(postObj, callback) {
-    postResponseMapper.convertResponses([postObj], callback)
+    postResponseMapper.convertResponses([postObj], function(err, postResponses) {
+        if (err) {
+            callback(err)
+            return
+        }
+        if (postResponses.length === 0) {
+            callback(null, [])
+        }
+        callback(null, postResponses[0])
+    })
 }
 
 postResponseMapper.convertResponses = function(postObjs, callback) {
@@ -45,7 +54,8 @@ postResponseMapper.convertResponses = function(postObjs, callback) {
                     title: post.title,
                     type: post.type,
                     author: authorResponse,
-                    createdAt: createdAd
+                    topic: topicResponse,
+                    createdAt: post.createdAt
                 }
             
                 if (post.type === 'full') {

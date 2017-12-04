@@ -9,7 +9,16 @@ var authorFilterMapper = require('../author/authorFilterMapper')
 var topicResponseMapper = {}
 
 topicResponseMapper.convertResponse = function(topicObj, callback) {
-    topicResponseMapper.convertResponses([topicObj], callback)
+    topicResponseMapper.convertResponses([topicObj], function(err, topicResponses) {
+        if (err) {
+            callback(err)
+            return
+        }
+        if (topicResponses.length === 0) {
+            callback(null, [])
+        }
+        callback(null, topicResponses[0])
+    })
 }
 
 topicResponseMapper.convertResponses = function(topicObjs, callback) {
@@ -31,6 +40,11 @@ topicResponseMapper.convertResponses = function(topicObjs, callback) {
             }
             var results = topics.map((topic) => {
                 var topicPostResponses = postResponses.filter((postResponse) => postResponse.topicId === topic._id)
+                                            .map((postResponse) => {
+                                                var result = cloneObject(postResponse)
+                                                delete result.topicId
+                                                return result
+                                            })
                 var result = {
                     id: topic._id,
                     name: topic.name,
@@ -64,6 +78,7 @@ var convertPostResponses = function(postObjs, callback) {
                 title: post.title,
                 type: post.type,
                 author: authorResponse,
+                topicId: post.topicId,
                 createdAt: post.createdAt
             }
 
@@ -95,6 +110,15 @@ var convertAuthorResponse = function(authorObj, callback) {
     }
 
     return result
+}
+
+var cloneObject = function(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
 }
 
 module.exports = topicResponseMapper

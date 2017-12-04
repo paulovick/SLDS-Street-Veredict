@@ -5,13 +5,22 @@ var postFilterMapper = require('../post/postFilterMapper')
 var authorTopicService = require('../../services/author/authorTopicService')
 var topicFilterMapper = require('../topic/topicFilterMapper')
 
-var authorMapper = {}
+var authorResponseMapper = {}
 
-authorMapper.convertResponse = function(authorObj, callback) {
-    authorMapper.convertResponses([authorObj], callback)
+authorResponseMapper.convertResponse = function(authorObj, callback) {
+    authorResponseMapper.convertResponses([authorObj], function(err, authorResponses) {
+        if (err) {
+            callback(err)
+            return
+        }
+        if (authorResponses.length === 0) {
+            callback(null, [])
+        }
+        callback(null, authorResponses[0])
+    })
 }
 
-authorMapper.convertResponses = function(authorObjs, callback) {
+authorResponseMapper.convertResponses = function(authorObjs, callback) {
     var authors = authorObjs.map((authorObj) => authorObj._doc)
     var postIds = Array.from(authors.map((author) => author.postIds))
     var postQuery = {
@@ -93,4 +102,4 @@ var convertTopicResponse = function(topicObj) {
     return result
 }
 
-module.exports = authorMapper
+module.exports = authorResponseMapper
