@@ -1,3 +1,3 @@
 api: npm install && node app.js
-web: cd Web && node web.js
-bo: cd Backoffice && node bo.js
+web: node web.js
+bo: node bo.js
