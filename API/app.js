@@ -13,6 +13,9 @@ app.use('/posts', postsRouter)
 var authorsRouter = require('./routes/authorRoutes')
 app.use('/authors', authorsRouter)
 
+var topicsRouter = require('./routes/topicRoutes')
+app.use('/topics', topicsRouter)
+
 app.listen(3000, () => {
     console.log("Listening to port 3000!")
 })

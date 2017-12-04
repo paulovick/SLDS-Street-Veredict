@@ -13,14 +13,34 @@ postFilterMapper.convertFilter = function(query) {
     }
 
     var result = Post.find(findElement)
-
+    
     if (query.ids) {
-        var ids = query.ids.split(',')
+        var ids = []
+        if (typeof query.ids === 'string') {
+            ids = query.ids.split(',')
+        } else {
+            ids = query.ids
+        }
         result = result.where('_id').in(ids)
     }
 
     if (query.authorIds) {
-        var ids = query.authorIds.split(',')
+        var ids = []
+        if (typeof query.authorIds === 'string') {
+            ids = query.authorIds.split(',')
+        } else {
+            ids = query.authorIds
+        }
+        result = result.where('authorId').in(ids)
+    }
+
+    if (query.topicIds) {
+        var ids = []
+        if (typeof query.topicIds === 'string') {
+            ids = query.topicIds.split(',')
+        } else {
+            ids = query.topicIds
+        }
         result = result.where('authorId').in(ids)
     }
 

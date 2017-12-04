@@ -32,8 +32,12 @@ var baseService = function() {
     
     _this.getByFilter = function(filter, callback) {
         filter.exec(function(err, entities) {
-            if (err || entities === null) {
+            if (err) {
                 callback(err)
+                return
+            }
+            if (entities === null) {
+                callback(null, [])
                 return
             }
             callback(null, entities)

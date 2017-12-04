@@ -7,6 +7,7 @@ postMapper.convertRequest = function(postRequest) {
     result.type = postRequest.type
     result.title = postRequest.title
     result.authorId = postRequest.authorId
+    result.topicId = postRequest.topicId
 
     if (postRequest.type === 'full') {
         result.content = postRequest.content

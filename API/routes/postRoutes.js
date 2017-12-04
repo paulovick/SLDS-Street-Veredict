@@ -80,7 +80,7 @@ router.post('/', (req, res) => {
 
         postResponseMapper.convertResponse(post, function(err, postResponse) {
             if (err) {
-                res.status(500).send('Error getting post with id {0}'.replace('{0}',postId))
+                res.status(500).send('Error creating post')
             }
             res.json(postResponse)
         })

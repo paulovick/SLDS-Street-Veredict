@@ -2,40 +2,29 @@ var Post = require('../../models/postSchema')
 
 var postAuthorService = require('../../services/post/postAuthorService')
 var authorFilterMapper = require('../author/authorFilterMapper')
+var postTopicService = require('../../services/post/postTopicService')
+var topicFilterMapper = require('../topic/topicFilterMapper')
 
-var postMapper = {}
+var postResponseMapper = {}
 
-postMapper.convertResponse = function(postObj, callback) {
-    var post = postObj._doc
-    postAuthorService.getById(post.authorId, function(err, author) {
+postResponseMapper.convertResponse = function(postObj, callback) {
+    postResponseMapper.convertResponses([postObj], function(err, postResponses) {
         if (err) {
             callback(err)
             return
         }
-        var authorResponse = convertAuthorResponse(author)
-        var result = {
-            id: post._id,
-            title: post.title,
-            type: post.type,
-            author: authorResponse,
-            createdAt: post.createdAt,
+        if (postResponses.length === 0) {
+            callback(null, [])
         }
-    
-        if (post.type === 'full') {
-            result.content = post.content
-        } else if (post.type === 'link') {
-            result.link = post.link
-        }
-    
-        callback(null, result)
+        callback(null, postResponses[0])
     })
 }
 
-postMapper.convertResponses = function(postObjs, callback) {
+postResponseMapper.convertResponses = function(postObjs, callback) {
     var posts = postObjs.map((postObj) => postObj._doc)
     var authorIds = posts.map((post) => post.authorId)
     var authorQuery = {
-        authorIds: authorIds
+        ids: authorIds
     }
     var authorFilter = authorFilterMapper.convertFilter(authorQuery)
     postAuthorService.getByFilter(authorFilter, function(err, authors) {
@@ -44,26 +33,42 @@ postMapper.convertResponses = function(postObjs, callback) {
             return
         }
         var authorResponses = authors.map((author) => convertAuthorResponse(author))
-        var results = posts.map((post) => {
-            var authorResponse = authorResponses.filter((author) => author.id === post.authorId)
-            var result = {
-                id: post._id,
-                title: post.title,
-                type: post.type,
-                author: authorResponse,
-                createdAt: post.createdAt
-            }
-        
-            if (post.type === 'full') {
-                result.content = post.content
-            } else if (post.type === 'link') {
-                result.link = post.link
+
+        var topicIds = posts.map((post) => post.topicId)
+        var topicQuery = {
+            ids: topicIds
+        }
+        var topicFilter = topicFilterMapper.convertFilter(topicQuery)
+        postTopicService.getByFilter(topicFilter, function(err, topics) {
+            if (err) {
+                callback(err)
+                return
             }
 
-            return result
-        })
+            var topicResponses = topics.map((topic) => convertTopicResponse(topic))
+            var results = posts.map((post) => {
+                var authorResponse = authorResponses.filter((author) => author.id === post.authorId)
+                var topicResponse = topicResponses.filter((topic) => topic.id === post.topicId)
+                var result = {
+                    id: post._id,
+                    title: post.title,
+                    type: post.type,
+                    author: authorResponse,
+                    topic: topicResponse,
+                    createdAt: post.createdAt
+                }
+            
+                if (post.type === 'full') {
+                    result.content = post.content
+                } else if (post.type === 'link') {
+                    result.link = post.link
+                }
     
-        callback(null, results)
+                return result
+            })
+        
+            callback(null, results)
+        })
     })
 }
 
@@ -85,4 +90,15 @@ var convertAuthorResponse = function(authorObj) {
     return result
 }
 
-module.exports = postMapper
+var convertTopicResponse = function(topicObj) {
+    var topic = topicObj._doc
+    var result = {
+        id: topic._id,
+        name: topic.name,
+        createdAt: topic.createdAt
+    }
+
+    return result
+}
+
+module.exports = postResponseMapper
