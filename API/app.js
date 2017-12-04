@@ -1,3 +1,5 @@
+var port = process.env.PORT || 3000
+
 var express = require('express')
 var bodyParser = require('body-parser')
 
@@ -16,6 +18,6 @@ app.use('/authors', authorsRouter)
 var topicsRouter = require('./routes/topicRoutes')
 app.use('/topics', topicsRouter)
 
-app.listen(8080, () => {
-    console.log("Listening to port 8080!")
+app.listen(port, () => {
+    console.log("Listening to port {0}!".replace('{0}',port))
 })
