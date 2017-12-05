@@ -23,8 +23,18 @@ gulp.task('minify-css', function() {
             .pipe(cleanCss())
             .pipe(concat('site.min.css'))
             .pipe(gulp.dest('./src/css/'));
-    }, 50);
+    }, 100);
 });
+
+/* EXTERNAL */
+
+gulp.task('minify-external-css', function() {
+    gulp.src('src/css/external/*.css')
+        .pipe(plumber())
+        .pipe(cleanCss())
+        .pipe(concat('external.min.css'))
+        .pipe(gulp.dest('./src/css/'));
+})
 
 /* TASKS SCSS */
 
@@ -33,6 +43,13 @@ var tasksSass = [
     'minify-css'
 ];
 
-gulp.task('default', tasksSass, function() {
+var tasksExternalCss = [
+    'minify-external-css'
+];
+
+var tasks = tasksSass.concat(tasksExternalCss);
+
+gulp.task('default', tasks, function() {
     gulp.watch('src/css/scss/*.scss', tasksSass);
+    gulp.watch('src/css/external/*.css', tasksExternalCss);
 });

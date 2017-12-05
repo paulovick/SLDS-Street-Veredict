@@ -1,3 +1,7 @@
+@import 'materialize/materialize';
+
+@import 'colors';
+
 p {
-    color: blue;
+    color: $primaryColor;
 }
