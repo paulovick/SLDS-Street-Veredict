@@ -49,7 +49,7 @@ var tasksExternalCss = [
 
 var tasks = tasksSass.concat(tasksExternalCss);
 
-gulp.task('default', tasks, function() {
+gulp.task('default-bo', tasks, function() {
     gulp.watch('src/css/scss/*.scss', tasksSass);
     gulp.watch('src/css/external/*.css', tasksExternalCss);
 });
