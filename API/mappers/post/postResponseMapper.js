@@ -47,8 +47,8 @@ postResponseMapper.convertResponses = function(postObjs, callback) {
 
             var topicResponses = topics.map((topic) => convertTopicResponse(topic))
             var results = posts.map((post) => {
-                var authorResponse = authorResponses.filter((author) => author.id === post.authorId)
-                var topicResponse = topicResponses.filter((topic) => topic.id === post.topicId)
+                var authorResponse = authorResponses.filter((author) => author.id === post.authorId)[0]
+                var topicResponse = topicResponses.filter((topic) => topic.id === post.topicId)[0]
                 var result = {
                     id: post._id,
                     title: post.title,
