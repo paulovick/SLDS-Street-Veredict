@@ -7498,5 +7498,5 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   stroke-linecap: round;
   /*shape-rendering: crispEdges;*/ }
 
-p {
-  color: #55AA55; }
+.sv-linethrough {
+  text-decoration: line-through; }
