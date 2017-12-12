@@ -1,0 +1,11 @@
+{
+    "topicList": {
+        "isFetching": false,
+        "items": []
+    },
+    "postList": {
+        "isFetching": false,
+        "topicId": 3,
+        "items": []
+    }
+}
