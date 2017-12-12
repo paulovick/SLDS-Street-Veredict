@@ -41,14 +41,14 @@ function receivePosts(topicId, json) {
     return {
         type: RECEIVE_POSTS,
         topicId,
-        posts: json.values
+        posts: json.posts
     }
 }
 
 export function fetchPosts(topicId) {
     return function(dispatch) {
         dispatch(requestPosts(topicId))
-        return fetch(`http://api.streetveredict.com/posts?topicId=${topicId}`)
+        return fetch(`http://api.streetveredict.com/topics/${topicId}`)
             .then(
                 response => response.json(),
                 error => console.error('Error receiving posts.', error)

@@ -6,7 +6,7 @@ const TopicList = ({topics}) => (
     <div>
         <ul>
             {topics.map((topic) => (
-                <li key={topic.id}><NavLink to={`/${topic.id}`}>topic.name</NavLink></li>
+                <li key={topic.id}><NavLink to={`/topics/${topic.id}`}>{topic.name}</NavLink></li>
             ))}
         </ul>
     </div>

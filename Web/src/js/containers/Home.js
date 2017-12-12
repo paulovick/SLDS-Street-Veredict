@@ -5,10 +5,6 @@ import { fetchTopics } from '../actions'
 import TopicList from '../components/TopicList'
 
 class Home extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
     componentDidMount() {
         const { dispatch } = this.props
         dispatch(fetchTopics())
@@ -33,7 +29,7 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-    topics: PropTypes.object.isRequired,
+    topics: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
 }

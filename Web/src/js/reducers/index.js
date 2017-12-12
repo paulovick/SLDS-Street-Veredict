@@ -45,7 +45,7 @@ function postList(
             return Object.assign({}, state, {
                 isFetching: false,
                 topicId: action.topicId,
-                posts: action.posts
+                items: action.posts
             })
         default:
             return state
