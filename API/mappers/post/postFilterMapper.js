@@ -41,7 +41,7 @@ postFilterMapper.convertFilter = function(query) {
         } else {
             ids = query.topicIds
         }
-        result = result.where('authorId').in(ids)
+        result = result.where('topicId').in(ids)
     }
 
     if (query.type) {
