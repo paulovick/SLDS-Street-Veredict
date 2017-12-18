@@ -3,16 +3,18 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import configureStore from '../stores/configureStore'
 import Home from './Home'
-import Posts from './Posts'
+import Topic from './Topic'
+import Post from './Post'
 
 let store = configureStore()
 
 const Root = () => (
     <Provider store={store}>
         <Router>
-            <div>
+            <div className="container">
                 <Route exact path="/" component={Home} />
-                <Route path="/topics/:topicId" component={Posts} />
+                <Route path="/topics/:topicId" component={Topic} />
+                <Route path="/posts/:postId" component={Post} />
             </div>
         </Router>
     </Provider>

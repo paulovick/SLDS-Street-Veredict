@@ -4,11 +4,11 @@ import { NavLink } from 'react-router-dom'
 
 const TopicList = ({topics}) => (
     <div>
-        <ul>
+        <div className="collection">
             {topics.map((topic) => (
-                <li key={topic.id}><NavLink to={`/topics/${topic.id}`}>{topic.name}</NavLink></li>
+                <NavLink className="collection-item" to={`/topics/${topic.id}`}>{topic.name}</NavLink>
             ))}
-        </ul>
+        </div>
     </div>
 )
 
