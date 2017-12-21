@@ -3,9 +3,17 @@
         "isFetching": false,
         "items": []
     },
+    "topicSingle": {
+        "isFetching": false,
+        "topic": {}
+    },
     "postList": {
         "isFetching": false,
         "topicId": 3,
         "items": []
+    },
+    "postSingle": {
+        "isFetching": false,
+        "post": {}
     }
 }

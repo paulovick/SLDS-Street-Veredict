@@ -14,15 +14,18 @@ class Home extends React.Component {
         const { isFetching, topics } = this.props
         return (
             <div>
-                {isFetching &&
-                    <p>Loading...</p>
-                }
-                {!isFetching && topics.length === 0 &&
-                    <p>There are no topics to show.</p>
-                }
-                {!isFetching && topics.length > 0 &&
-                    <TopicList topics={topics} />
-                }
+                <div className="sv-title">Topics</div>
+                <div className="sv-content-container">
+                    {isFetching &&
+                        <p>Loading...</p>
+                    }
+                    {!isFetching && topics.length === 0 &&
+                        <p>There are no topics to show.</p>
+                    }
+                    {!isFetching && topics.length > 0 &&
+                        <TopicList topics={topics} />
+                    }
+                </div>
             </div>
         )
     }
