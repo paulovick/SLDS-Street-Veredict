@@ -1,16 +1,23 @@
 import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import configureStore from '../stores/configureStore'
-import AsyncApp from './AsyncApp'
+import Home from './Home'
+import Topic from './Topic'
+import Post from './Post'
 
-const store = configureStore()
+let store = configureStore()
 
-export default class Root extends React.Component {
-    render() {
-        return (
-            <Provider store={store}>
-                <AsyncApp />
-            </Provider>
-        )
-    }
-}
+const Root = () => (
+    <Provider store={store}>
+        <Router>
+            <div className="container">
+                <Route exact path="/" component={Home} />
+                <Route path="/topics/:topicId" component={Topic} />
+                <Route path="/posts/:postId" component={Post} />
+            </div>
+        </Router>
+    </Provider>
+)
+
+export default Root

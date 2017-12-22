@@ -1,67 +1,124 @@
 import fetch from 'cross-fetch'
 
-export const SELECT_SUBREDDIT = 'SELECT_SUBREDDIT'
-export const INVALIDATE_SUBREDDIT = 'INVALIDATE_SUBREDDIT'
+export const REQUEST_TOPICS = 'REQUEST_TOPICS'
+export const RECEIVE_TOPICS = 'RECEIVE_TOPICS'
+
+export const REQUEST_TOPIC = 'REQUEST_TOPIC'
+export const RECEIVE_TOPIC = 'RECEIVE_TOPIC'
+
 export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 
-export function selectSubreddit(subreddit) {
+export const REQUEST_POST = 'REQUEST_POST'
+export const RECEIVE_POST = 'RECEIVE_POST'
+
+/* Topics */
+
+function requestTopics() {
     return {
-        type: SELECT_SUBREDDIT,
-        subreddit
+        type: REQUEST_TOPICS
     }
 }
 
-export function invalidateSubreddit(subreddit) {
+function receiveTopics(json) {
     return {
-        type: INVALIDATE_SUBREDDIT,
-        subreddit
+        type: RECEIVE_TOPICS,
+        topics: json.values
     }
 }
 
-function requestPosts(subreddit) {
-    return {
-        type: REQUEST_POSTS,
-        subreddit
-    }
-}
-
-function receivePosts(subreddit, json) {
-    return {
-        type: RECEIVE_POSTS,
-        subreddit,
-        posts: json.data.children.map(child => child.data),
-        receivedAt: Date.now()
-    }
-}
-
-function fetchPosts(subreddit) {
+export function fetchTopics() {
     return function(dispatch) {
-        dispatch(requestPosts(subreddit))
-        return fetch(`https://www.reddit.com/r/${subreddit}.json`)
+        dispatch(requestTopics())
+        return fetch('http://api.streetveredict.com/topics')
             .then(
                 response => response.json(),
-                error => console.log('An error ocurred.', error)
+                error => console.log('Error receiving topics.', error)
             )
-            .then(json => dispatch(receivePosts(subreddit, json)))
+            .then(json => dispatch(receiveTopics(json)))
     }
 }
 
-function shouldFetchPosts(state, subreddit) {
-    const posts = state.postsBySubreddit[subreddit]
-    if (!posts) {
-        return true
-    } else if (posts.isFetching) {
-        return false
-    } else {
-        return posts.didInvalidate
+function requestTopic(topicId) {
+    return {
+        type: REQUEST_TOPIC
     }
 }
 
-export function fetchPostsIfNeeded(subreddit) {
-    return (dispatch, getState) => {
-        if (shouldFetchPosts(getState(), subreddit)) {
-            return dispatch(fetchPosts(subreddit))
-        }
+function receiveTopic(json) {
+    return {
+        type: RECEIVE_TOPIC,
+        topic: json
+    }
+}
+
+export function fetchTopic(topicId) {
+    return function(dispatch) {
+        dispatch(requestTopic(topicId))
+        return fetch(`http://api.streetveredict.com/topics/${topicId}`)
+            .then(
+                response => response.json(),
+                error => console.log(`Error receiving topic ${topicId}`, error)
+            )
+            .then(
+                json => dispatch(receiveTopic(json))
+            )
+    }
+}
+
+
+/* Posts */
+
+function requestPosts(topicId) {
+    return {
+        type: REQUEST_POSTS,
+        topicId
+    }
+}
+
+function receivePosts(topicId, json) {
+    return {
+        type: RECEIVE_POSTS,
+        topicId,
+        posts: json.posts
+    }
+}
+
+export function fetchPosts(topicId) {
+    return function(dispatch) {
+        dispatch(requestPosts(topicId))
+        return fetch(`http://api.streetveredict.com/topics/${topicId}`)
+            .then(
+                response => response.json(),
+                error => console.error('Error receiving posts.', error)
+            )
+            .then(json => dispatch(receivePosts(topicId, json)))
+    }
+}
+
+function requestPost(postId) {
+    return {
+        type: REQUEST_POST
+    }
+}
+
+function receivePost(json) {
+    return {
+        type: RECEIVE_POST,
+        post: json
+    }
+}
+
+export function fetchPost(postId) {
+    return function(dispatch) {
+        dispatch(requestPost(postId))
+        return fetch(`http://api.streetveredict.com/posts/${postId}`)
+            .then(
+                response => response.json(),
+                error => console.log(`Error receiving topic ${postId}`, error)
+            )
+            .then(
+                json => dispatch(receivePost(json))
+            )
     }
 }
