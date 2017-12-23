@@ -7523,3 +7523,10 @@ body {
 
 .sv-topic-list a {
   color: #ffaa33; }
+
+.sv-topic-list button {
+  background-color: #ffaa33; }
+  .sv-topic-list button:hover {
+    background-color: #ffbb55; }
+  .sv-topic-list button:focus {
+    background-color: #ffaa33; }

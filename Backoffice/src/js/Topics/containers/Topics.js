@@ -11,16 +11,22 @@ class Topics extends React.Component {
     }
 
     render() {
-        const { isFetching, topics, error } = this.props
+        let { isFetching, topics, error, isBeingDeleted } = this.props
+        topics = topics.map((topic) => {
+            if (isBeingDeleted > -1) {
+                topic.isBeingDeleted = topic.id === isBeingDeleted
+            }
+            return topic
+        })
         return (
             <div>
                 <div className={ error ? 'sv-top-alert' : 'sv-hide-elements'}>
-                    <span>There was an error loading topics. Please try again.</span>
+                    <span>{ error !== null && error}</span>
                 </div>
                 <div>
                     <h4><i>Street Veredict <strong>Topics</strong></i></h4>
                 </div>
-                <TopicList isFetching={isFetching} topics={topics}/>
+                <TopicList isFetching={isFetching} topics={topics} />
             </div>
         )
     }
@@ -29,6 +35,7 @@ class Topics extends React.Component {
 Topics.propTypes = {
     topics: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
+    isBeingDeleted: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired
 }
 
@@ -38,17 +45,20 @@ function mapStateToProps(state) {
     const {
         isFetching,
         items: topics,
-        error
+        error,
+        isBeingDeleted
     } = topicList || {
         isFetching: true,
         items: [],
-        error: false
+        error: false,
+        isBeingDeleted: -1
     }
 
     return {
         isFetching,
         topics,
-        error
+        error,
+        isBeingDeleted
     }
 }
 

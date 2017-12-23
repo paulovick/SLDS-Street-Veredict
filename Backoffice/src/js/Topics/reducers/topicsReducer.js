@@ -2,21 +2,25 @@ import { combineReducers } from 'redux'
 import {
     TOPICS_REQUEST_TOPICS,
     TOPICS_RECEIVE_TOPICS,
-    TOPICS_ERROR_TOPICS
+    TOPICS_ERROR_TOPICS,
+    REQUEST_TOPIC_DELETE,
+    RECEIVE_TOPIC_DELETE,
+    ERROR_TOPIC_DELETE
 } from '../actions/topicsActions'
 
 function topicList(
     state = {
         isFetching: false,
         items: [],
-        error: false
+        isBeingDeleted: -1,
+        error: null
     },
     action
 ) {
     switch(action.type) {
         case TOPICS_REQUEST_TOPICS:
             return Object.assign({}, state, {
-                isFetching: true
+                isFetching: true,
             })
         case TOPICS_RECEIVE_TOPICS:
             return Object.assign({}, state, {
@@ -26,7 +30,21 @@ function topicList(
         case TOPICS_ERROR_TOPICS:
             return Object.assign({}, state, {
                 isFetching: false,
-                error: true
+                error: action.error
+            })
+        case REQUEST_TOPIC_DELETE:
+            return Object.assign({}, state, {
+                isBeingDeleted: action.topicId
+            })
+        case RECEIVE_TOPIC_DELETE:
+            return Object.assign({}, state, {
+                items: state.items.filter((topic) => topic.id !== action.topicId),
+                isBeingDeleted: -1
+            })
+        case ERROR_TOPIC_DELETE:
+            return Object.assign({}, state, {
+                error: action.error,
+                isBeingDeleted: -1
             })
         default:
             return state

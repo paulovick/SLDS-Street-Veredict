@@ -12,12 +12,13 @@ const TopicList = ({isFetching, topics}) => (
                     <th>Name</th>
                     <th># posts</th>
                     <th>Created At</th>
+                    <th></th>
                 </tr>
             </thead>
 
             <tbody>
                 {!isFetching && topics.map((topic) => (
-                        <TopicRow key={topic.id} topic={topic}/>
+                        <TopicRow key={topic.id} topic={topic} />
                     ))
                 }
             </tbody>

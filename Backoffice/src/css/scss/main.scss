@@ -35,4 +35,16 @@ body {
     a {
         color: $light-orange-color;
     }
+
+    button {
+        background-color: $light-orange-color;
+
+        &:hover {
+            background-color: $very-light-orange-color;
+        }
+
+        &:focus {
+            background-color: $light-orange-color;
+        }
+    }
 }

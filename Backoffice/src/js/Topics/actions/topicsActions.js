@@ -4,6 +4,10 @@ export const TOPICS_REQUEST_TOPICS = 'TOPICS_REQUEST_TOPICS'
 export const TOPICS_RECEIVE_TOPICS = 'TOPICS_RECEIVE_TOPICS'
 export const TOPICS_ERROR_TOPICS = 'TOPICS_ERROR_TOPICS'
 
+export const REQUEST_TOPIC_DELETE = 'REQUEST_TOPIC_DELETE'
+export const RECEIVE_TOPIC_DELETE = 'RECEIVE_TOPIC_DELETE'
+export const ERROR_TOPIC_DELETE = 'ERROR_TOPIC_DELETE'
+
 function requestTopics() {
     return {
         type: TOPICS_REQUEST_TOPICS
@@ -35,5 +39,37 @@ export function getTopics() {
             console.error('Error loading topics.', error)
             dispatch(errorTopics())
         })
+    }
+}
+
+function requestTopicDelete(topicId) {
+    return {
+        type: REQUEST_TOPIC_DELETE,
+        topicId: topicId
+    }
+}
+
+function receiveTopicDelete(topicId) {
+    return {
+        type: RECEIVE_TOPIC_DELETE,
+        topicId: topicId
+    }
+}
+
+function errorTopicDelete() {
+    return {
+        type: ERROR_TOPIC_DELETE
+    }
+}
+
+export function deleteTopic(topicId) {
+    return function(dispatch) {
+        dispatch(requestTopicDelete(topicId))
+        return $.ajax({
+            url: `http://api.streetveredict.com/topics/${topicId}`,
+            method: 'DELETE'
+        })
+        .done(() => dispatch(receiveTopicDelete(topicId)))
+        .fail(() => dispatch(errorTopicDelete()))
     }
 }
