@@ -5,46 +5,14 @@
 body {
     background-color: $body-background-color;
 }
+.sv-bo-module-card {
+    background-color: $light-orange-color;
+    color: white;
+    height: 5em;
+    font-size: 1.5em;
 
-.sv-title {
-    margin-top: 30px;
-    font-size: 33px;
-}
-
-.collection-item {
-    &.link {
-        a {
-            &:hover {
-                text-decoration: underline;
-            }
-        }
+    &:hover {
+        background-color: $very-light-orange-color;
+        text-decoration: underline;
     }
-
-    a {
-        color: $link-color
-    }
-}
-
-.sv-post-container {
-    margin-top: 30px;
-}
-
-.sv-post-date {
-    margin-top: 10px;
-    margin-bottom: 4px;
-    color: $light-gray-color;
-    font-size: 14px;
-}
-
-.sv-post-title {
-    margin-top: 8px;
-    margin-bottom: 10px;
-    color: $black-color;
-    font-size: 24px;
-}
-
-.sv-post-author {
-    margin-top: 8px;
-    color: $grey-color;
-    font-size: 18px;
 }

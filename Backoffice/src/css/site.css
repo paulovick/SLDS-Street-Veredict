@@ -7501,32 +7501,11 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 body {
   background-color: #fafafa; }
 
-.sv-title {
-  margin-top: 30px;
-  font-size: 33px; }
-
-.collection-item.link a:hover {
-  text-decoration: underline; }
-
-.collection-item a {
-  color: #26a69a; }
-
-.sv-post-container {
-  margin-top: 30px; }
-
-.sv-post-date {
-  margin-top: 10px;
-  margin-bottom: 4px;
-  color: #dddddd;
-  font-size: 14px; }
-
-.sv-post-title {
-  margin-top: 8px;
-  margin-bottom: 10px;
-  color: black;
-  font-size: 24px; }
-
-.sv-post-author {
-  margin-top: 8px;
-  color: #aaaaaa;
-  font-size: 18px; }
+.sv-bo-module-card {
+  background-color: #ffaa33;
+  color: white;
+  height: 5em;
+  font-size: 1.5em; }
+  .sv-bo-module-card:hover {
+    background-color: #ffbb55;
+    text-decoration: underline; }

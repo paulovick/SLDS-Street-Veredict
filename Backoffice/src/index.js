@@ -7,7 +7,7 @@ import './css/site.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import Root from './js/containers/Root'
+import Root from './js/Root/Root'
 
 ReactDOM.render(
     <Root />,
