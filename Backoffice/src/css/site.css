@@ -7501,6 +7501,17 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 body {
   background-color: #fafafa; }
 
+.sv-hide-elements {
+  display: none; }
+
+.sv-top-alert {
+  background-color: #ffaaaa;
+  border: 1px solid #ff3333;
+  border-radius: 2px;
+  color: #ff3333;
+  padding: 0.3em 0.7em;
+  margin-top: 1em; }
+
 .sv-bo-module-card {
   background-color: #ffaa33;
   color: white;
@@ -7509,3 +7520,6 @@ body {
   .sv-bo-module-card:hover {
     background-color: #ffbb55;
     text-decoration: underline; }
+
+.sv-topic-list a {
+  color: #ffaa33; }

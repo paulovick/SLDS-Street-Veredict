@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import BackofficeModuleList from '../components/BackofficeModuleList';
 
@@ -28,10 +27,6 @@ class Home extends React.Component {
             </div>
         )
     }
-}
-
-Home.propTypes = {
-
 }
 
 function mapStateToProps(state) {

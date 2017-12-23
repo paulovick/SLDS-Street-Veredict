@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux'
+import topicsReducer from '../Topics/reducers/topicsReducer'
 
 const rootReducer = combineReducers({
-    // topicList,
-    // topicSingle,
-    // postList,
-    // postSingle
+    topicsReducer
 })
 
 export default rootReducer

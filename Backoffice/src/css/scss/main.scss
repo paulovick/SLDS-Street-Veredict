@@ -5,6 +5,20 @@
 body {
     background-color: $body-background-color;
 }
+
+.sv-hide-elements {
+    display: none
+}
+
+.sv-top-alert {
+    background-color: $error-light-color;
+    border: 1px solid $error-color;
+    border-radius: 2px;
+    color: $error-color;
+    padding: 0.3em 0.7em;
+    margin-top: 1em;
+}
+
 .sv-bo-module-card {
     background-color: $light-orange-color;
     color: white;
@@ -14,5 +28,11 @@ body {
     &:hover {
         background-color: $very-light-orange-color;
         text-decoration: underline;
+    }
+}
+
+.sv-topic-list {
+    a {
+        color: $light-orange-color;
     }
 }
