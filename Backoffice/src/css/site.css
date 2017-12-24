@@ -7504,13 +7504,25 @@ body {
 .sv-hide-elements {
   display: none; }
 
-.sv-top-alert {
-  background-color: #ffaaaa;
-  border: 1px solid #ff3333;
+.sv-top-alert-error {
+  border-width: 1px;
+  border-style: solid;
   border-radius: 2px;
-  color: #ff3333;
   padding: 0.3em 0.7em;
-  margin-top: 1em; }
+  margin-top: 1em;
+  background-color: #ffaaaa;
+  color: #ff3333;
+  border-color: #ff3333; }
+
+.sv-top-alert-success {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 2px;
+  padding: 0.3em 0.7em;
+  margin-top: 1em;
+  background-color: #aaffaa;
+  color: #33aa33;
+  border-color: #33aa33; }
 
 .sv-bo-module-card {
   background-color: #ffaa33;
@@ -7525,8 +7537,24 @@ body {
   color: #ffaa33; }
 
 .sv-topic-list button {
+  font-size: 0.8em;
   background-color: #ffaa33; }
   .sv-topic-list button:hover {
     background-color: #ffbb55; }
   .sv-topic-list button:focus {
     background-color: #ffaa33; }
+
+.sv-topic-list .sv-topic-deleted {
+  opacity: 50%; }
+
+.sv-topic-list table {
+  table-layout: fixed; }
+  .sv-topic-list table .sv-table-cell-id {
+    width: 3em;
+    font-weight: bold; }
+  .sv-topic-list table .sv-table-cell-posts {
+    width: 5em; }
+  .sv-topic-list table .sv-table-cell-created-at {
+    width: 10em; }
+  .sv-topic-list table .sv-table-cell-delete {
+    width: 7em; }

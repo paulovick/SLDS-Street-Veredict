@@ -23,7 +23,8 @@ function receiveTopics(json) {
 
 function errorTopics() {
     return {
-        type: TOPICS_ERROR_TOPICS
+        type: TOPICS_ERROR_TOPICS,
+        error: "Error getting topics"
     }
 }
 
@@ -52,13 +53,15 @@ function requestTopicDelete(topicId) {
 function receiveTopicDelete(topicId) {
     return {
         type: RECEIVE_TOPIC_DELETE,
-        topicId: topicId
+        topicId: topicId,
+        success: "Topic deleted successful"
     }
 }
 
 function errorTopicDelete() {
     return {
-        type: ERROR_TOPIC_DELETE
+        type: ERROR_TOPIC_DELETE,
+        error: "Error deleting topic"
     }
 }
 

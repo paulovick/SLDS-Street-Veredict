@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { getTopics } from '../actions/topicsActions'
 import TopicList from '../components/TopicList'
+import { NavLink } from 'react-router-dom'
 
 class Topics extends React.Component {
     componentDidMount() {
@@ -11,7 +12,7 @@ class Topics extends React.Component {
     }
 
     render() {
-        let { isFetching, topics, error, isBeingDeleted } = this.props
+        let { isFetching, topics, error, isBeingDeleted, success } = this.props
         topics = topics.map((topic) => {
             if (isBeingDeleted > -1) {
                 topic.isBeingDeleted = topic.id === isBeingDeleted
@@ -20,13 +21,19 @@ class Topics extends React.Component {
         })
         return (
             <div>
-                <div className={ error ? 'sv-top-alert' : 'sv-hide-elements'}>
-                    <span>{ error !== null && error}</span>
+                <div className={ error ? 'sv-top-alert-error' : 'sv-hide-elements'}>
+                    <span>{ error }</span>
+                </div>
+                <div className={ success ? 'sv-top-alert-success' : 'sv-hide-elements'}>
+                    <span>{ success }</span>
                 </div>
                 <div>
                     <h4><i>Street Veredict <strong>Topics</strong></i></h4>
                 </div>
                 <TopicList isFetching={isFetching} topics={topics} />
+                <NavLink to="/topics/create" className="btn-floating btn-large waves-effect waves-light orange">
+                    <i class="material-icons">+</i>
+                </NavLink>
             </div>
         )
     }
@@ -36,6 +43,7 @@ Topics.propTypes = {
     topics: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     isBeingDeleted: PropTypes.number.isRequired,
+    isDeleted: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired
 }
 
@@ -46,19 +54,25 @@ function mapStateToProps(state) {
         isFetching,
         items: topics,
         error,
-        isBeingDeleted
+        isBeingDeleted,
+        isDeleted,
+        success
     } = topicList || {
         isFetching: true,
         items: [],
-        error: false,
-        isBeingDeleted: -1
+        error: null,
+        isBeingDeleted: -1,
+        isDeleted: -1,
+        success: null
     }
 
     return {
         isFetching,
         topics,
         error,
-        isBeingDeleted
+        isBeingDeleted,
+        isDeleted,
+        success
     }
 }
 

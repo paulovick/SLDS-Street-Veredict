@@ -2,15 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { deleteTopic } from '../actions/topicsActions'
-import { dispatch } from 'react-redux'
+import moment from 'moment'
 
 const TopicRow = ({topic, dispatch}) => (
-    <tr>
-        <td>{topic.id}</td>
+    <tr className={topic.isDeleted && 'sv-topic-deleted'}>
+        <td className=".sv-table-cell-id right-align">{topic.id}</td>
         <td>{topic.name}</td>
-        <td>{topic.posts.length}</td>
-        <td>{topic.createdAt}</td>
-        <td>
+        <td className=".sv-table-cell-posts">{topic.posts.length}</td>
+        <td className=".sv-table-cell-created-at">{moment(topic.createdAt).format('D MMM YYYY, HH:mm')}</td>
+        <td className=".sv-table-cell-delete">
+            <button onClick={() => dispatch(deleteTopic(topic.id))} className="btn">Edit</button>
+        </td>
+        <td className=".sv-table-cell-delete">
             <button onClick={() => dispatch(deleteTopic(topic.id))} className="btn">Delete</button>
         </td>
     </tr>

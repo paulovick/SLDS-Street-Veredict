@@ -13,7 +13,9 @@ function topicList(
         isFetching: false,
         items: [],
         isBeingDeleted: -1,
-        error: null
+        isDeleted: -1,
+        error: null,
+        success: null
     },
     action
 ) {
@@ -34,17 +36,21 @@ function topicList(
             })
         case REQUEST_TOPIC_DELETE:
             return Object.assign({}, state, {
-                isBeingDeleted: action.topicId
+                isBeingDeleted: action.topicId,
+                isDeleted: -1
             })
         case RECEIVE_TOPIC_DELETE:
             return Object.assign({}, state, {
                 items: state.items.filter((topic) => topic.id !== action.topicId),
-                isBeingDeleted: -1
+                isBeingDeleted: -1,
+                isDeleted: action.topicId,
+                success: action.success
             })
         case ERROR_TOPIC_DELETE:
             return Object.assign({}, state, {
                 error: action.error,
-                isBeingDeleted: -1
+                isBeingDeleted: -1,
+                isDeleted: -1
             })
         default:
             return state
