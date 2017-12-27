@@ -5,6 +5,7 @@ import {
     EDIT_TOPIC_EDIT_REQUEST,
     EDIT_TOPIC_EDIT_RECEIVE
 } from '../actions/editTopicActions'
+import { TOPIC_PROPERTY_MODIFIED } from '../actions/topicContentActions'
 import { ROOT_ERROR } from '../../Root/actions'
 
 function editTopic(
@@ -23,6 +24,10 @@ function editTopic(
             return Object.assign({}, state, {
                 isFetching: false,
                 topic: action.topic
+            })
+        case TOPIC_PROPERTY_MODIFIED:
+            return Object.assign({}, state, {
+                topic: null
             })
         case EDIT_TOPIC_EDIT_REQUEST:
             return Object.assign({}, state, {

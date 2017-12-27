@@ -56,7 +56,7 @@ function mapStateToProps(state) {
         topic: null
     }
 
-    topicJson = topicJson ? topicJson : topic ? topic : {}
+    topicJson = topic ? topic : topicJson ? topicJson : {}
 
     return {
         topicJson,

@@ -31,7 +31,7 @@ function mapStateToProps(state) {
     const { topicContentReducer, createTopicReducer } = state
     const createOrEditTopic = topicContentReducer ? topicContentReducer.createOrEditTopic : null
     const createTopic = createTopicReducer ? createTopicReducer.createTopic : null
-    const {
+    let {
         topicJson,
         validation
     } = createOrEditTopic || {
@@ -46,6 +46,8 @@ function mapStateToProps(state) {
         isCreating: false,
         jsonReceived: null
     }
+
+    topicJson = topicJson ? topicJson : {}
 
     return {
         topicJson,

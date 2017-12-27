@@ -4,13 +4,14 @@ import { connect } from 'react-redux'
 import { getTopics } from '../actions/topicsActions'
 import TopicList from '../components/TopicList'
 import { NavLink } from 'react-router-dom'
+import { topicComponentReset } from '../actions/topicContentActions'
 
 class Topics extends React.Component {
     componentDidMount() {
         const { dispatch } = this.props
         dispatch(getTopics())
+        dispatch(topicComponentReset())
     }
-
     render() {
         let { isFetching, topics, isBeingDeleted } = this.props
         topics = topics.map((topic) => {
