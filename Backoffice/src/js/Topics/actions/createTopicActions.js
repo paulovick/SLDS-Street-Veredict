@@ -22,8 +22,7 @@ function requestCreateTopic(json) {
 function receiveCreateTopic(json) {
     return {
         type: CREATE_TOPIC_CREATE_RECEIVE,
-        json: json,
-        success: "Topic created sucessfully"
+        json: json
     }
 }
 

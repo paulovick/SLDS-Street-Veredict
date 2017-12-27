@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Home from '../Home/containers/Home'
 import Topics from '../Topics/containers/Topics'
 import CreateTopic from '../Topics/containers/CreateTopic'
-// import EditTopic from '../Topics/containers/EditTopic'
+import EditTopic from '../Topics/containers/EditTopic'
 
 class Base extends React.Component {
     render() {
@@ -27,7 +27,7 @@ class Base extends React.Component {
     
                     <Route exact path="/topics" component={Topics} />
                     <Route exact path="/topics/create" component={CreateTopic} />
-                    {/* <Route path="/topics/edit/:topicId" component={EditTopic} /> */}
+                    <Route path="/topics/edit/:topicId" component={EditTopic} />
                 </div>
             </Router>
         )

@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux'
 import topicsReducer from '../Topics/reducers/topicsReducer'
 import topicContentReducer from '../Topics/reducers/topicContentReducer'
+import createTopicReducer from '../Topics/reducers/createTopicReducer'
+import editTopicReducer from '../Topics/reducers/editTopicReducer'
+
 import {
     ROOT_SUCCESS,
     ROOT_ERROR
@@ -30,7 +33,9 @@ function rootReducer(
 const reducers = combineReducers({
     rootReducer,
     topicsReducer,
-    topicContentReducer
+    topicContentReducer,
+    createTopicReducer,
+    editTopicReducer
 })
 
 export default reducers
