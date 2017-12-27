@@ -4,12 +4,13 @@ import {
     rootSuccess,
     rootError
 } from '../../Root/actions'
+import {
+    validateJson,
+    jsonValidationError
+} from './topicContentActions'
 
 export const CREATE_TOPIC_CREATE_REQUEST = 'CREATE_TOPIC_CREATE_REQUEST'
 export const CREATE_TOPIC_CREATE_RECEIVE = 'CREATE_TOPIC_CREATE_RECEIVE'
-
-export const TOPIC_PROPERTY_MODIFIED = 'CREATE_TOPIC_PROPERTY_MODIFIED'
-export const TOPIC_CREATE_JSON_VALIDATION_ERROR = 'TOPIC_CREATE_JSON_VALIDATION_ERROR'
 
 function requestCreateTopic(json) {
     return {
@@ -23,22 +24,6 @@ function receiveCreateTopic(json) {
         type: CREATE_TOPIC_CREATE_RECEIVE,
         json: json,
         success: "Topic created sucessfully"
-    }
-}
-
-function validateJson(json) {
-    var result = null
-    if (!json.name) {
-        result = result || {}
-        result.nameError = true
-    }
-    return result
-}
-
-function jsonValidationError(jsonValidation) {
-    return {
-        type: TOPIC_CREATE_JSON_VALIDATION_ERROR,
-        validation: jsonValidation
     }
 }
 
@@ -65,14 +50,5 @@ export function createTopicAction(json) {
         .fail((error) => {
             dispatch(rootError('Error creating topic'))
         })
-    }
-}
-
-export function modifyTopicProperty(originalTopic, propertyName, newValue) {
-    return {
-        type: TOPIC_PROPERTY_MODIFIED,
-        originalTopic: originalTopic,
-        propertyName: propertyName,
-        newValue: newValue
     }
 }

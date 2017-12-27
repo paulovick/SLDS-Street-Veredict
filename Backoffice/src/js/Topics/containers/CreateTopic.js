@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { createTopicAction } from '../actions/createTopicActions'
 import TopicContent from '../components/TopicContent'
-import { modifyTopicProperty } from '../actions/createTopicActions'
+import { modifyTopicProperty } from '../actions/topicContentActions'
 
 class CreateTopic extends React.Component {
     render() {
@@ -29,14 +29,14 @@ CreateTopic.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { createTopicReducer } = state
-    const createTopic = createTopicReducer ? createTopicReducer.createTopic : null
+    const { topicContentReducer } = state
+    const createOrEditTopic = topicContentReducer ? topicContentReducer.createOrEditTopic : null
     const {
         topicJson,
         validation,
         isCreating,
         jsonReceived
-    } = createTopic || {
+    } = createOrEditTopic || {
         topicJson: {},
         validation: {},
         isCreating: false,

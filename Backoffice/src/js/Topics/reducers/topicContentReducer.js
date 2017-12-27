@@ -1,13 +1,15 @@
 import { combineReducers } from 'redux'
 import {
     CREATE_TOPIC_CREATE_REQUEST,
-    CREATE_TOPIC_CREATE_RECEIVE,
-    TOPIC_PROPERTY_MODIFIED,
-    TOPIC_CREATE_JSON_VALIDATION_ERROR
+    CREATE_TOPIC_CREATE_RECEIVE
 } from '../actions/createTopicActions'
+import {
+    TOPIC_PROPERTY_MODIFIED,
+    TOPIC_JSON_VALIDATION_ERROR
+} from '../actions/topicContentActions'
 import { ROOT_ERROR } from '../../Root/actions';
 
-function createTopic(
+function createOrEditTopic(
     state = {
         topicJson: {},
         validation: {},
@@ -38,7 +40,7 @@ function createTopic(
                     [action.propertyName]: action.newValue
                 })
             })
-        case TOPIC_CREATE_JSON_VALIDATION_ERROR:
+        case TOPIC_JSON_VALIDATION_ERROR:
             return Object.assign({}, state, {
                 validation: action.validation
             })
@@ -47,8 +49,8 @@ function createTopic(
     }
 }
 
-const createTopicReducer = combineReducers({
-    createTopic
+const topicContentReducer = combineReducers({
+    createOrEditTopic
 })
 
-export default createTopicReducer
+export default topicContentReducer
