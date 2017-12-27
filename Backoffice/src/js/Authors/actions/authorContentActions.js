@@ -8,6 +8,10 @@ export function validateJson(json) {
         result = result || {}
         result.nameError = true
     }
+    if (!json.type) {
+        result = result || {}
+        result.typeError = true
+    }
     return result
 }
 

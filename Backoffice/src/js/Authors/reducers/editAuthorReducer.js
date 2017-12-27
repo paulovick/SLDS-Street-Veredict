@@ -10,6 +10,7 @@ import { ROOT_ERROR } from '../../Root/actions'
 
 function editAuthor(
     state = {
+        isFetching: false,
         isEditing: false,
         author: null
     },
@@ -23,7 +24,7 @@ function editAuthor(
         case EDIT_AUTHOR_FETCH_RECEIVE:
             return Object.assign({}, state, {
                 isFetching: false,
-                author: action.topic
+                author: action.author
             })
         case AUTHOR_PROPERTY_MODIFIED:
             return Object.assign({}, state, {
