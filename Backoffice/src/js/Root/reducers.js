@@ -10,6 +10,8 @@ import authorContentReducer from '../Authors/reducers/authorContentReducer'
 import createAuthorReducer from '../Authors/reducers/createAuthorReducer'
 import editAuthorReducer from '../Authors/reducers/editAuthorReducer'
 
+import postsReducer from '../Posts/reducers/postsReducer'
+
 import {
     ROOT_SUCCESS,
     ROOT_ERROR
@@ -45,7 +47,8 @@ const reducers = combineReducers({
     authorsReducer,
     authorContentReducer,
     createAuthorReducer,
-    editAuthorReducer
+    editAuthorReducer,
+    postsReducer
 })
 
 export default reducers

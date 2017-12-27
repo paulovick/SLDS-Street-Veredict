@@ -7549,6 +7549,8 @@ body {
   .sv-topic-list table .sv-table-cell-id {
     width: 3em;
     font-weight: bold; }
+  .sv-topic-list table .sv-table-cell-author {
+    width: 6em; }
   .sv-topic-list table .sv-table-cell-posts {
     width: 5em; }
   .sv-topic-list table .sv-table-cell-created-at {
