@@ -1,30 +1,30 @@
 import { combineReducers } from 'redux'
 import {
-    TOPIC_PROPERTY_MODIFIED,
-    TOPIC_JSON_VALIDATION_ERROR,
-    TOPIC_COMPONENT_RESET
-} from '../actions/topicContentActions'
+    AUTHOR_PROPERTY_MODIFIED,
+    AUTHOR_JSON_VALIDATION_ERROR,
+    AUTHOR_COMPONENT_RESET
+} from '../actions/authorContentActions'
 
-function createOrEditTopic(
+function createOrEditAuthor(
     state = {
-        topicJson: null,
+        authorJson: null,
         validation: {},
     },
     action
 ) {
     switch(action.type) {
-        case TOPIC_COMPONENT_RESET:
+        case AUTHOR_COMPONENT_RESET:
             return Object.assign({}, state, {
-                topicJson: null,
+                authorJson: null,
                 validation: {}
             })
-        case TOPIC_PROPERTY_MODIFIED:
+        case AUTHOR_PROPERTY_MODIFIED:
             return Object.assign({}, state, {
-                topicJson: Object.assign({}, action.originalTopic, {
+                authorJson: Object.assign({}, action.originalAuthor, {
                     [action.propertyName]: action.newValue
                 })
             })
-        case TOPIC_JSON_VALIDATION_ERROR:
+        case AUTHOR_JSON_VALIDATION_ERROR:
             return Object.assign({}, state, {
                 validation: action.validation
             })
@@ -33,8 +33,8 @@ function createOrEditTopic(
     }
 }
 
-const topicContentReducer = combineReducers({
-    createOrEditTopic
+const authorContentReducer = combineReducers({
+    createOrEditAuthor
 })
 
-export default topicContentReducer
+export default authorContentReducer

@@ -9,6 +9,8 @@ import CreateTopic from '../Topics/containers/CreateTopic'
 import EditTopic from '../Topics/containers/EditTopic'
 
 import Authors from '../Authors/containers/Authors'
+import CreateAuthor from '../Authors/containers/CreateAuthor'
+import EditAuthor from '../Authors/containers/EditAuthor'
 
 class Base extends React.Component {
     render() {
@@ -34,6 +36,8 @@ class Base extends React.Component {
                     <Route path="/topics/edit/:topicId" component={EditTopic} />
 
                     <Route exact path="/authors" component={Authors} />
+                    <Route exact path="/authors/create" component={CreateAuthor} />
+                    <Route path="/authors/edit/:authorId" component={EditAuthor} />
                 </div>
             </Router>
         )

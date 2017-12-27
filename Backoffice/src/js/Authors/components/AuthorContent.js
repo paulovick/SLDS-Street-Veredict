@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { modifyTopicProperty } from '../actions/topicContentActions'
+import { modifyAuthorProperty } from '../actions/authorContentActions'
 
-class TopicContent extends React.Component {
+class AuthorContent extends React.Component {
     render() {
-        const {topic, validation, isFetching, disable, dispatch} = this.props
+        const {author, validation, isFetching, disable, dispatch} = this.props
         return (
             <div className="card-panel">
                 {isFetching &&
@@ -13,25 +13,25 @@ class TopicContent extends React.Component {
                 }
                 {!isFetching &&
                     <div className="row">
-                        <div className={topic.id !== null ? 'input-field col s12' : 'hide'}>
+                        <div className={author.id !== null ? 'input-field col s12' : 'hide'}>
                             <input disabled="disabled"
-                                defaultValue={topic.id}
-                                id="sv-create-topic-id-id"
+                                defaultValue={author.id}
+                                id="sv-create-author-id-id"
                             />
-                            <label htmlFor="#sv-create-topic-id-id" className="active">Id</label>
+                            <label htmlFor="#sv-create-author-id-id" className="active">Id</label>
                         </div>
                         <div className="input-field col s12">
-                            <input id="sv-create-topic-title-id"
-                                defaultValue={topic.name ? topic.name : ''}
+                            <input id="sv-create-author-title-id"
+                                defaultValue={author.name ? author.name : ''}
                                 type="text"
                                 className={validation.titleError && 'invalid'}
                                 onBlur={(e) => {
                                     var value = e.target.value ? e.target.value : null
-                                    dispatch(modifyTopicProperty(topic, 'name', value))
+                                    dispatch(modifyAuthorProperty(author, 'name', value))
                                 }}
                                 disabled={disable ? 'disabled' : ''}
                             />
-                            <label htmlFor="#sv-create-topic-title-id"
+                            <label htmlFor="#sv-create-author-title-id"
                                 data-error="Invalid name"
                                 className="active">Name</label>
                         </div>
@@ -42,11 +42,11 @@ class TopicContent extends React.Component {
     }
 } 
 
-TopicContent.propTypes = {
-    topic: PropTypes.object.isRequired,
+AuthorContent.propTypes = {
+    author: PropTypes.object.isRequired,
     validation: PropTypes.object.isRequired,
     disable: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
 }
 
-export default connect()(TopicContent)
+export default connect()(AuthorContent)

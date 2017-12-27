@@ -1,43 +1,43 @@
 import { combineReducers } from 'redux'
 import {
-    EDIT_TOPIC_FETCH_REQUEST,
-    EDIT_TOPIC_FETCH_RECEIVE,
-    EDIT_TOPIC_EDIT_REQUEST,
-    EDIT_TOPIC_EDIT_RECEIVE
-} from '../actions/editTopicActions'
-import { TOPIC_PROPERTY_MODIFIED } from '../actions/topicContentActions'
+    EDIT_AUTHOR_FETCH_REQUEST,
+    EDIT_AUTHOR_FETCH_RECEIVE,
+    EDIT_AUTHOR_EDIT_REQUEST,
+    EDIT_AUTHOR_EDIT_RECEIVE
+} from '../actions/editAuthorActions'
+import { AUTHOR_PROPERTY_MODIFIED } from '../actions/authorContentActions'
 import { ROOT_ERROR } from '../../Root/actions'
 
-function editTopic(
+function editAuthor(
     state = {
         isEditing: false,
-        topic: null
+        author: null
     },
     action
 ) {
     switch(action.type) {
-        case EDIT_TOPIC_FETCH_REQUEST:
+        case EDIT_AUTHOR_FETCH_REQUEST:
             return Object.assign({}, state, {
                 isFetching: true
             })
-        case EDIT_TOPIC_FETCH_RECEIVE:
+        case EDIT_AUTHOR_FETCH_RECEIVE:
             return Object.assign({}, state, {
                 isFetching: false,
-                topic: action.topic
+                author: action.topic
             })
-        case TOPIC_PROPERTY_MODIFIED:
+        case AUTHOR_PROPERTY_MODIFIED:
             return Object.assign({}, state, {
-                topic: null
+                author: null
             })
-        case EDIT_TOPIC_EDIT_REQUEST:
+        case EDIT_AUTHOR_EDIT_REQUEST:
             return Object.assign({}, state, {
                 isEditing: true,
-                topic: null,
+                author: null,
             })
-        case EDIT_TOPIC_EDIT_RECEIVE:
+        case EDIT_AUTHOR_EDIT_RECEIVE:
             return Object.assign({}, state, {
                 isEditing: false,
-                topic: action.json
+                author: action.json
             })
         case ROOT_ERROR:
             return Object.assign({}, state, {
@@ -48,8 +48,8 @@ function editTopic(
     }
 }
 
-const editTopicReducer = combineReducers({
-    editTopic
+const editAuthorReducer = combineReducers({
+    editAuthor
 })
 
-export default editTopicReducer
+export default editAuthorReducer
