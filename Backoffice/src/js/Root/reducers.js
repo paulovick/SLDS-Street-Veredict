@@ -1,8 +1,11 @@
 import { combineReducers } from 'redux'
+
 import topicsReducer from '../Topics/reducers/topicsReducer'
 import topicContentReducer from '../Topics/reducers/topicContentReducer'
 import createTopicReducer from '../Topics/reducers/createTopicReducer'
 import editTopicReducer from '../Topics/reducers/editTopicReducer'
+
+import authorsReducer from '../Authors/reducers/authorsReducer'
 
 import {
     ROOT_SUCCESS,
@@ -35,7 +38,8 @@ const reducers = combineReducers({
     topicsReducer,
     topicContentReducer,
     createTopicReducer,
-    editTopicReducer
+    editTopicReducer,
+    authorsReducer
 })
 
 export default reducers

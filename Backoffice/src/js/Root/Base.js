@@ -1,10 +1,14 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
+
 import Home from '../Home/containers/Home'
+
 import Topics from '../Topics/containers/Topics'
 import CreateTopic from '../Topics/containers/CreateTopic'
 import EditTopic from '../Topics/containers/EditTopic'
+
+import Authors from '../Authors/containers/Authors'
 
 class Base extends React.Component {
     render() {
@@ -28,6 +32,8 @@ class Base extends React.Component {
                     <Route exact path="/topics" component={Topics} />
                     <Route exact path="/topics/create" component={CreateTopic} />
                     <Route path="/topics/edit/:topicId" component={EditTopic} />
+
+                    <Route exact path="/authors" component={Authors} />
                 </div>
             </Router>
         )
