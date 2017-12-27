@@ -7533,15 +7533,12 @@ body {
     background-color: #ffbb55;
     text-decoration: underline; }
 
-.sv-topic-list a {
-  color: #ffaa33; }
-
-.sv-topic-list button {
+.sv-topic-list .sv-table-action-btn {
   font-size: 0.8em;
   background-color: #ffaa33; }
-  .sv-topic-list button:hover {
+  .sv-topic-list .sv-table-action-btn:hover {
     background-color: #ffbb55; }
-  .sv-topic-list button:focus {
+  .sv-topic-list .sv-table-action-btn:focus {
     background-color: #ffaa33; }
 
 .sv-topic-list .sv-topic-deleted {
@@ -7556,5 +7553,16 @@ body {
     width: 5em; }
   .sv-topic-list table .sv-table-cell-created-at {
     width: 10em; }
+  .sv-topic-list table .sv-table-cell-edit {
+    width: 7em; }
   .sv-topic-list table .sv-table-cell-delete {
     width: 7em; }
+
+.sv-icon-plus {
+  font-size: 2em;
+  font-weight: 300; }
+
+.sv-fab-bottom-right {
+  position: fixed;
+  bottom: 1em;
+  right: 1em; }

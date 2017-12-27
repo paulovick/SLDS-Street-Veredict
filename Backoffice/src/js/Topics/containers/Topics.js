@@ -12,7 +12,7 @@ class Topics extends React.Component {
     }
 
     render() {
-        let { isFetching, topics, error, isBeingDeleted, success } = this.props
+        let { isFetching, topics, isBeingDeleted } = this.props
         topics = topics.map((topic) => {
             if (isBeingDeleted > -1) {
                 topic.isBeingDeleted = topic.id === isBeingDeleted
@@ -21,18 +21,13 @@ class Topics extends React.Component {
         })
         return (
             <div>
-                <div className={ error ? 'sv-top-alert-error' : 'sv-hide-elements'}>
-                    <span>{ error }</span>
-                </div>
-                <div className={ success ? 'sv-top-alert-success' : 'sv-hide-elements'}>
-                    <span>{ success }</span>
-                </div>
                 <div>
                     <h4><i>Street Veredict <strong>Topics</strong></i></h4>
                 </div>
                 <TopicList isFetching={isFetching} topics={topics} />
-                <NavLink to="/topics/create" className="btn-floating btn-large waves-effect waves-light orange">
-                    <i class="material-icons">+</i>
+                <NavLink to="/topics/create" className="sv-fab-bottom-right btn-floating btn-large waves-effect waves-light orange">
+                    {/* <span className="sv-icon-plus">+</span> */}
+                    <i className="material-icons">add</i>
                 </NavLink>
             </div>
         )
@@ -53,26 +48,20 @@ function mapStateToProps(state) {
     const {
         isFetching,
         items: topics,
-        error,
         isBeingDeleted,
-        isDeleted,
-        success
+        isDeleted
     } = topicList || {
         isFetching: true,
         items: [],
-        error: null,
         isBeingDeleted: -1,
-        isDeleted: -1,
-        success: null
+        isDeleted: -1
     }
 
     return {
         isFetching,
         topics,
-        error,
         isBeingDeleted,
-        isDeleted,
-        success
+        isDeleted
     }
 }
 

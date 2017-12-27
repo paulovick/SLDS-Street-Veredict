@@ -46,11 +46,7 @@ body {
 }
 
 .sv-topic-list {
-    a {
-        color: $light-orange-color;
-    }
-
-    button {
+    .sv-table-action-btn {
         font-size: 0.8em;
         background-color: $light-orange-color;
 
@@ -83,8 +79,23 @@ body {
             width: 10em;
         }
 
+        .sv-table-cell-edit {
+            width: 7em;
+        }
+
         .sv-table-cell-delete {
             width: 7em;
         }
     }
+}
+
+.sv-icon-plus {
+    font-size: 2em;
+    font-weight: 300;
+}
+
+.sv-fab-bottom-right {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
 }

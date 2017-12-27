@@ -1,12 +1,14 @@
 import $ from 'jquery'
+import {
+    rootSuccess,
+    rootError
+} from '../../Root/actions'
 
 export const TOPICS_REQUEST_TOPICS = 'TOPICS_REQUEST_TOPICS'
 export const TOPICS_RECEIVE_TOPICS = 'TOPICS_RECEIVE_TOPICS'
-export const TOPICS_ERROR_TOPICS = 'TOPICS_ERROR_TOPICS'
 
 export const REQUEST_TOPIC_DELETE = 'REQUEST_TOPIC_DELETE'
 export const RECEIVE_TOPIC_DELETE = 'RECEIVE_TOPIC_DELETE'
-export const ERROR_TOPIC_DELETE = 'ERROR_TOPIC_DELETE'
 
 function requestTopics() {
     return {
@@ -21,13 +23,6 @@ function receiveTopics(json) {
     }
 }
 
-function errorTopics() {
-    return {
-        type: TOPICS_ERROR_TOPICS,
-        error: "Error getting topics"
-    }
-}
-
 export function getTopics() {
     return function(dispatch) {
         dispatch(requestTopics())
@@ -37,8 +32,7 @@ export function getTopics() {
         })
         .done((json) => dispatch(receiveTopics(json)))
         .fail((error) => {
-            console.error('Error loading topics.', error)
-            dispatch(errorTopics())
+            dispatch(rootError('Error loading topics'))
         })
     }
 }
@@ -58,13 +52,6 @@ function receiveTopicDelete(topicId) {
     }
 }
 
-function errorTopicDelete() {
-    return {
-        type: ERROR_TOPIC_DELETE,
-        error: "Error deleting topic"
-    }
-}
-
 export function deleteTopic(topicId) {
     return function(dispatch) {
         dispatch(requestTopicDelete(topicId))
@@ -72,7 +59,10 @@ export function deleteTopic(topicId) {
             url: `http://api.streetveredict.com/topics/${topicId}`,
             method: 'DELETE'
         })
-        .done(() => dispatch(receiveTopicDelete(topicId)))
-        .fail(() => dispatch(errorTopicDelete()))
+        .done(() => {
+            dispatch(receiveTopicDelete(topicId))
+            dispatch(rootSuccess('Topic deleted successfully'))
+        })
+        .fail(() => dispatch(rootError('Error deleting topic')))
     }
 }

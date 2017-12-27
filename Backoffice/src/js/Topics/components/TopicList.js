@@ -12,7 +12,7 @@ const TopicList = ({isFetching, topics}) => (
                     <th>Name</th>
                     <th className="sv-table-cell-posts"># posts</th>
                     <th className="sv-table-cell-created-at">Created At</th>
-                    <th className="sv-table-cell-delete"></th>
+                    <th className="sv-table-cell-edit"></th>
                     <th className="sv-table-cell-delete"></th>
                 </tr>
             </thead>
