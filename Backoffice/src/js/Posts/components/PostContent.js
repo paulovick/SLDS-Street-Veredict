@@ -2,7 +2,7 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { modifyPostProperty } from '../actions/postContentActions'
+import { modifyPostProperty, fetchAuthors } from '../actions/postContentActions'
 import $ from 'jquery'
 
 function createCKEditor(callbackOnBlur) {
@@ -55,32 +55,31 @@ function initializeAuthorInput(ref, authors, defaultAuthor, selectedCallback) {
         display: 'name',
         valueKey: 'id',
         source: authorMatcher(authors ? authors : [
-            {
-                id: 0,
-                name: 'Pau Torrents'
-            },
-            {
-                id: 1,
-                name: 'La Vanguardia'
-            },
-            {
-                id: 3,
-                name: 'Eduard Maestro'
-            },
-            {
-                id: 4,
-                name: 'El Pais'
-            },
-            {
-                id: 5,
-                name: 'Pepito Grillo'
-            }
+            // {
+            //     id: 0,
+            //     name: 'Pau Torrents'
+            // },
+            // {
+            //     id: 1,
+            //     name: 'La Vanguardia'
+            // },
+            // {
+            //     id: 3,
+            //     name: 'Eduard Maestro'
+            // },
+            // {
+            //     id: 4,
+            //     name: 'El Pais'
+            // },
+            // {
+            //     id: 5,
+            //     name: 'Pepito Grillo'
+            // }
         ])
     })
     authorTypeahead.bind('typeahead:selected', selectedCallback)
     if (defaultAuthor) {
         authorTypeahead.typeahead('val', defaultAuthor.name)
-        // authorTypeahead.typeahead('display', defaultAuthor.name)
     }
 }
 
@@ -95,11 +94,12 @@ class PostContent extends React.Component {
         const { post, dispatch } = this.props
 
         dispatch(modifyPostProperty(post, 'type', 'full'))
+        dispatch(fetchAuthors())
     }
     componentDidUpdate() {
-        const { post, postReceived } = this.props
+        const { post, postReceived, authors } = this.props
 
-        initializeAuthorInput(this.refs.postAuthorInput, null, postReceived ? postReceived.author : null, this.handleAuthorOnChange)
+        initializeAuthorInput(this.refs.postAuthorInput, authors, postReceived ? postReceived.author : null, this.handleAuthorOnChange)
         initializePostTypeSelect(this.refs.postTypeSelect, this.handlePostTypeOnBlur)
 
         if (post.type && post.type === 'full') {
@@ -226,4 +226,27 @@ PostContent.propTypes = {
     dispatch: PropTypes.func.isRequired
 }
 
-export default connect()(PostContent)
+function mapStateToProps(state, ownProps) {
+    const { postContentReducer } = state
+    const { post, validation, isFetching, disable } = ownProps
+    const createOrEditPost = postContentReducer ? postContentReducer.createOrEditPost : null
+
+    const {
+        authors,
+        topics
+    } = createOrEditPost || {
+        authors: [],
+        topics: []
+    }
+
+    return {
+        post,
+        validation,
+        isFetching,
+        disable,
+        authors,
+        topics
+    }
+} 
+
+export default connect(mapStateToProps)(PostContent)

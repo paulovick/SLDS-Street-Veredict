@@ -1,6 +1,12 @@
+import $ from 'jquery'
+import { rootError } from '../../Root/actions'
+
 export const POST_PROPERTY_MODIFIED = 'POST_PROPERTY_MODIFIED'
 export const POST_JSON_VALIDATION_ERROR = 'POST_JSON_VALIDATION_ERROR'
 export const POST_COMPONENT_RESET = 'POST_COMPONENT_RESET'
+
+export const POST_AUTHORS_REQUEST = 'POST_AUTHORS_REQUEST'
+export const POST_AUTHORS_RECEIVE = 'POST_AUTHORS_RECEIVE'
 
 export function validateJson(json) {
     var result = null
@@ -43,5 +49,33 @@ export function modifyPostProperty(originalPost, propertyName, newValue) {
 export function postComponentReset() {
     return {
         type: POST_COMPONENT_RESET
+    }
+}
+
+function requestAuthors() {
+    return {
+        type: POST_AUTHORS_REQUEST
+    }
+}
+
+function receiveAuthors(json) {
+    return {
+        type: POST_AUTHORS_RECEIVE,
+        authors: json.values
+    }
+}
+
+export function fetchAuthors() {
+    return function(dispatch) {
+        dispatch(requestAuthors())
+        $.ajax({
+            url: 'http://api.streetveredict.com/authors',
+            method: 'GET'
+        })
+        .done((json) => dispatch(receiveAuthors(json)))
+        .fail((error) => {
+            console.log('Error receiving authors')
+            dispatch(rootError('Error receiving authors'))
+        })
     }
 }
