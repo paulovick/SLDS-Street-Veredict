@@ -11,13 +11,13 @@ class EditPost extends React.Component {
         dispatch(fetchPost(postId))
     }
     render() {
-        const { dispatch, postJson, validation, isFetching, isEditing } = this.props
+        const { dispatch, post, postJson, validation, isFetching, isEditing } = this.props
         return (
             <div>
                 <div>
                     <h4><i>Street Veredict <strong>Edit Post</strong></i></h4>
                 </div>
-                <PostContent post={postJson} validation={validation} disable={isEditing} isFetching={isFetching} />
+                <PostContent post={postJson} postReceived={post} validation={validation} disable={isEditing} isFetching={isFetching} />
                 <button className="sv-fab-bottom-right btn-floating btn-large waves-effect waves-light orange"
                     onClick={() => dispatch(editPostAction(postJson))}
                 >
@@ -30,6 +30,23 @@ class EditPost extends React.Component {
 
 EditPost.propTypes = {
     dispatch: PropTypes.func.isRequired
+}
+
+function mapPost(post) {
+    var result = {
+        id: post.id,
+        title: post.title,
+        authorId: post.author.id,
+        topicId: post.topic.id,
+        type: post.type
+    }
+    if (post.type === 'full') {
+        result.content = post.content
+    } else if (post.type === 'link') {
+        result.link = post.link
+    }
+
+    return result
 }
 
 function mapStateToProps(state) {
@@ -56,9 +73,10 @@ function mapStateToProps(state) {
         post: null
     }
 
-    postJson = post ? post : postJson ? postJson : {}
+    postJson = post ? mapPost(post) : postJson ? postJson : {}
 
     return {
+        post,
         postJson,
         validation,
         isEditing,

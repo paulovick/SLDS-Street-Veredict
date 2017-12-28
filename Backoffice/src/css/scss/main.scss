@@ -103,3 +103,38 @@ body {
     bottom: 1em;
     right: 1em;
 }
+
+.twitter-typeahead {
+    .tt-input,
+    .tt-hint {
+        margin-bottom: 0px !important;
+    }
+
+    .tt-hint {
+        color: $grey-color;
+    }
+
+    pre {
+        color: black;
+    }
+
+    .tt-dropdown-menu {
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .tt-dataset-authors {
+        @extend .card-panel;
+        padding: 0;
+    }
+
+    .tt-suggestion {
+        padding: 5px 10px;
+        border-bottom: 1px solid $light-gray-color;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $light-gray-color;
+        }
+    }
+}
