@@ -2,7 +2,13 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { modifyPostProperty, fetchAuthors } from '../actions/postContentActions'
+import {
+    modifyPostProperty,
+    fetchAuthors,
+    fetchTopics,
+    authorsInitializedAction,
+    topicsInitializedAction
+} from '../actions/postContentActions'
 import $ from 'jquery'
 
 function createCKEditor(callbackOnBlur) {
@@ -29,13 +35,13 @@ function initializePostTypeSelect(ref, callbackOnBlur) {
     jQuerySelect.on('change', callbackOnBlur)
 }
 
-function authorMatcher(authors) {
+function entityMatcher(entities) {
     return function findMatches(query, callback) {
         var matches = []
         var nameRegex = new RegExp(query, 'i')
-        $.each(authors, function(i, author) {
-            if (author && nameRegex.test(author.name)) {
-                matches.push(author)
+        $.each(entities, function(i, entity) {
+            if (entity && nameRegex.test(entity.name)) {
+                matches.push(entity)
             }
         })
         callback(matches)
@@ -54,28 +60,7 @@ function initializeAuthorInput(ref, authors, defaultAuthor, selectedCallback) {
         name: 'authors',
         display: 'name',
         valueKey: 'id',
-        source: authorMatcher(authors ? authors : [
-            // {
-            //     id: 0,
-            //     name: 'Pau Torrents'
-            // },
-            // {
-            //     id: 1,
-            //     name: 'La Vanguardia'
-            // },
-            // {
-            //     id: 3,
-            //     name: 'Eduard Maestro'
-            // },
-            // {
-            //     id: 4,
-            //     name: 'El Pais'
-            // },
-            // {
-            //     id: 5,
-            //     name: 'Pepito Grillo'
-            // }
-        ])
+        source: entityMatcher(authors ? authors : [])
     })
     authorTypeahead.bind('typeahead:selected', selectedCallback)
     if (defaultAuthor) {
@@ -83,10 +68,31 @@ function initializeAuthorInput(ref, authors, defaultAuthor, selectedCallback) {
     }
 }
 
+function initializeTopicInput(ref, topics, defaultTopic, selectedCallback) {
+    const topicInput = findDOMNode(ref)
+    const jQueryInput = window.jQuery(topicInput)
+
+    var topicTypeahead = jQueryInput.typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+    }, {
+        name: 'topics',
+        display: 'name',
+        valueKey: 'id',
+        source: entityMatcher(topics ? topics : [])
+    })
+    topicTypeahead.bind('typeahead:selected', selectedCallback)
+    if (defaultTopic) {
+        topicTypeahead.typeahead('val', defaultTopic.name)
+    }
+}
+
 class PostContent extends React.Component {
     constructor(props) {
         super(props)
         this.handleAuthorOnChange = this.handleAuthorOnChange.bind(this)
+        this.handleTopicOnChange = this.handleTopicOnChange.bind(this)
         this.handleCKEditorOnBlur = this.handleCKEditorOnBlur.bind(this)
         this.handlePostTypeOnBlur = this.handlePostTypeOnBlur.bind(this)
     }
@@ -95,11 +101,23 @@ class PostContent extends React.Component {
 
         dispatch(modifyPostProperty(post, 'type', 'full'))
         dispatch(fetchAuthors())
+        dispatch(fetchTopics())
     }
     componentDidUpdate() {
-        const { post, postReceived, authors } = this.props
+        const { post, postReceived, authors, topics, authorsInitialized, topicsInitialized, dispatch } = this.props
 
-        initializeAuthorInput(this.refs.postAuthorInput, authors, postReceived ? postReceived.author : null, this.handleAuthorOnChange)
+        if (!authorsInitialized) {
+            initializeAuthorInput(this.refs.postAuthorInput, authors, postReceived ? postReceived.author : null, this.handleAuthorOnChange)
+            if (authors) {
+                dispatch(authorsInitializedAction())
+            }
+        }
+        if (!topicsInitialized) {
+            initializeTopicInput(this.refs.postTopicInput, topics, postReceived ? postReceived.topic : null, this.handleTopicOnChange)
+            if (topics) {
+                dispatch(topicsInitializedAction())
+            }
+        }
         initializePostTypeSelect(this.refs.postTypeSelect, this.handlePostTypeOnBlur)
 
         if (post.type && post.type === 'full') {
@@ -115,6 +133,11 @@ class PostContent extends React.Component {
         const { post, dispatch } = this.props
         const value = datum ? datum.id : null
         dispatch(modifyPostProperty(post, 'authorId', value))
+    }
+    handleTopicOnChange(obj, datum, name) {
+        const { post, dispatch } = this.props
+        const value = datum ? datum.id : null
+        dispatch(modifyPostProperty(post, 'topicId', value))
     }
     handlePostTypeOnBlur(e) {
         const { post, dispatch } = this.props
@@ -172,7 +195,14 @@ class PostContent extends React.Component {
                                     className="active">Author</label>
                             </div>
                             <div className="input-field col s6">
-                                
+                                <input id="sv-create-post-topic-id"
+                                    type="text"
+                                    ref="postTopicInput"
+                                    placeholder="Search for an topic"
+                                />
+                                <label htmlFor="#sv-create-post-topic-id"
+                                    data-error="Invalid topic"
+                                    className="active">Topic</label>
                             </div>
                         </div>
                         <div className="row">
@@ -233,10 +263,14 @@ function mapStateToProps(state, ownProps) {
 
     const {
         authors,
-        topics
+        topics,
+        authorsInitialized,
+        topicsInitialized
     } = createOrEditPost || {
         authors: [],
-        topics: []
+        topics: [],
+        authorsInitialized: false,
+        topicsInitialized: false
     }
 
     return {
@@ -245,7 +279,9 @@ function mapStateToProps(state, ownProps) {
         isFetching,
         disable,
         authors,
-        topics
+        topics,
+        authorsInitialized,
+        topicsInitialized
     }
 } 
 

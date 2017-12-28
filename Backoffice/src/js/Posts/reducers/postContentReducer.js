@@ -4,7 +4,11 @@ import {
     POST_JSON_VALIDATION_ERROR,
     POST_COMPONENT_RESET,
     POST_AUTHORS_RECEIVE,
-    POST_AUTHORS_REQUEST
+    POST_AUTHORS_REQUEST,
+    POST_TOPICS_RECEIVE,
+    POST_TOPICS_REQUEST,
+    POST_AUTHORS_INITIALIZED,
+    POST_TOPICS_INITIALIZED
 } from '../actions/postContentActions'
 
 function createOrEditPost(
@@ -12,7 +16,9 @@ function createOrEditPost(
         postJson: null,
         validation: {},
         authors: null,
-        topics: null
+        topics: null,
+        authorsInitialized: false,
+        topicsInitialized: false
     },
     action
 ) {
@@ -39,6 +45,22 @@ function createOrEditPost(
         case POST_AUTHORS_RECEIVE:
             return Object.assign({}, state, {
                 authors: action.authors
+            })
+        case POST_TOPICS_REQUEST:
+            return Object.assign({}, state, {
+                topics: null
+            })
+        case POST_TOPICS_RECEIVE:
+            return Object.assign({}, state, {
+                topics: action.topics
+            })
+        case POST_AUTHORS_INITIALIZED:
+            return Object.assign({}, state, {
+                authorsInitialized: true
+            })
+        case POST_TOPICS_INITIALIZED:
+            return Object.assign({}, state, {
+                topicsInitialized: true
             })
         default:
             return state

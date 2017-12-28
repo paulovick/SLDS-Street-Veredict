@@ -8,11 +8,25 @@ export const POST_COMPONENT_RESET = 'POST_COMPONENT_RESET'
 export const POST_AUTHORS_REQUEST = 'POST_AUTHORS_REQUEST'
 export const POST_AUTHORS_RECEIVE = 'POST_AUTHORS_RECEIVE'
 
+export const POST_TOPICS_REQUEST = 'POST_TOPICS_REQUEST'
+export const POST_TOPICS_RECEIVE = 'POST_TOPICS_RECEIVE'
+
+export const POST_AUTHORS_INITIALIZED = 'POST_AUTHORS_INITIALIZED'
+export const POST_TOPICS_INITIALIZED = 'POST_TOPICS_INITIALIZED'
+
 export function validateJson(json) {
     var result = null
-    if (!json.name) {
+    if (!json.title) {
         result = result || {}
         result.nameError = true
+    }
+    if (!json.authorId) {
+        result = result || {}
+        result.authorError = true
+    }
+    if (!json.topicId) {
+        result = result || {}
+        result.topicError = true
     }
     if (!json.type) {
         result = result || {}
@@ -77,5 +91,45 @@ export function fetchAuthors() {
             console.log('Error receiving authors')
             dispatch(rootError('Error receiving authors'))
         })
+    }
+}
+
+function requestTopics() {
+    return {
+        type: POST_TOPICS_REQUEST
+    }
+}
+
+function receiveTopics(json) {
+    return {
+        type: POST_TOPICS_RECEIVE,
+        topics: json.values
+    }
+}
+
+export function fetchTopics() {
+    return function(dispatch) {
+        dispatch(requestTopics())
+        $.ajax({
+            url: 'http://api.streetveredict.com/topics',
+            method: 'GET'
+        })
+        .done((json) => dispatch(receiveTopics(json)))
+        .fail((error) => {
+            console.log('Error receiving topics')
+            dispatch(rootError('Error receiving topics'))
+        })
+    }
+}
+
+export function authorsInitializedAction() {
+    return {
+        type: POST_AUTHORS_INITIALIZED
+    }
+}
+
+export function topicsInitializedAction() {
+    return {
+        type: POST_TOPICS_INITIALIZED
     }
 }
