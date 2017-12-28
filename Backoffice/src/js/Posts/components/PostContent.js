@@ -4,7 +4,28 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { modifyPostProperty } from '../actions/postContentActions'
 
+function createCKEditor(callbackOnBlur) {
+    if (!window.CKEDITOR.instances.postContentEditor) {
+        try {
+            window.CKEDITOR.replace('postContentEditor')
+            window.CKEDITOR.instances.postContentEditor.on('blur', callbackOnBlur);
+        } catch(ex) {
+            console.log("Couldn't load CKEditor")
+        }
+    }
+}
+
+function destroyCKEditor() {
+    if (window.CKEDITOR.instances.postContentEditor) {
+        window.CKEDITOR.instances.postContentEditor.destroy();
+    }
+}
+
 class PostContent extends React.Component {
+    constructor(props) {
+        super(props)
+        this.handleCKEditorOnBlur = this.handleCKEditorOnBlur.bind(this)
+    }
     componentDidMount() {
         const { post, dispatch } = this.props
 
@@ -22,19 +43,18 @@ class PostContent extends React.Component {
         })
 
         if (post.type && post.type === 'full') {
-            if (!window.CKEDITOR.instances.postContentEditor) {
-                window.CKEDITOR.replace('postContentEditor')
-            }
+            createCKEditor(this.handleCKEditorOnBlur)
         } else if (post.type && post.type === 'link') {
-            if (window.CKEDITOR.instances.postContentEditor) {
-                window.CKEDITOR.instances.postContentEditor.destroy();
-            }
+            destroyCKEditor()
         }
     }
     componentWillUnmount() {
-        if (window.CKEDITOR.instances.postContentEditor) {
-            window.CKEDITOR.instances.postContentEditor.destroy();
-        }
+        destroyCKEditor()
+    }
+    handleCKEditorOnBlur(e) {
+        const { post, dispatch } = this.props
+        const content = e.editor.getData()
+        dispatch(modifyPostProperty(post, 'content', content))
     }
     render() {
         const {post, validation, isFetching, disable, dispatch} = this.props
@@ -104,7 +124,7 @@ class PostContent extends React.Component {
                         {post.type && post.type === 'full' &&
                             <div className="row">
                                 <div className="col s12">
-                                    <textarea name="postContentEditor"></textarea>
+                                    <textarea name="postContentEditor">{post.content ? post.content : ''}</textarea>
                                 </div>
                             </div>
                         }

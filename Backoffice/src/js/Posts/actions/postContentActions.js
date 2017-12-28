@@ -12,6 +12,15 @@ export function validateJson(json) {
         result = result || {}
         result.typeError = true
     }
+    if (json.type) {
+        if (json.type === 'full' && !json.content) {
+            result = result || {}
+            result.contentError = true
+        } else if (json.type === 'link' && !json.link) {
+            result = result || {}
+            result.linkError = true
+        }
+    }
     return result
 }
 
