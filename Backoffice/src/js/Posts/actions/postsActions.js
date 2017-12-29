@@ -16,21 +16,51 @@ function requestPosts() {
     }
 }
 
-function receivePosts(json) {
+function receivePosts(json, filter) {
     return {
         type: POSTS_RECEIVE_POSTS,
-        posts: json.values
+        posts: json.values.filter((post) => {
+            var result = true
+            if (filter.authorName) {
+                var authorRegex = new RegExp(filter.authorName, 'i')
+                if (!authorRegex.test(post.author.name)) {
+                    result = false
+                }
+            }
+            if (filter.topicName) {
+                var topicRegex = new RegExp(filter.topicName, 'i')
+                if (!topicRegex.test(post.topic.name)) {
+                    result = false
+                }
+            }
+            return result
+        })
     }
 }
 
-export function getPosts() {
+function createPostsQueryUrl(filter) {
+    let result = 'http://api.streetveredict.com/posts'
+    let anyFilter = false
+    if (filter.title) {
+        const titleQuery = filter.title.replace(' ', '+')
+        if (!anyFilter) result += '?'
+        else result += '&'
+        result += 'title=' + titleQuery
+        anyFilter = true
+    }
+    return result
+}
+
+export function getPosts(filter) {
+    filter = filter || {}
     return function(dispatch) {
         dispatch(requestPosts())
+        var url = createPostsQueryUrl(filter)
         return $.ajax({
-            url: 'http://api.streetveredict.com/posts',
+            url: url,
             method: 'GET'
         })
-        .done((json) => dispatch(receivePosts(json)))
+        .done((json) => dispatch(receivePosts(json, filter)))
         .fail((error) => {
             dispatch(rootError('Error loading posts'))
         })

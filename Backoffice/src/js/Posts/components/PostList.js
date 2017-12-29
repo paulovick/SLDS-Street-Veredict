@@ -2,9 +2,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PostRow from './PostRow'
+import PostFilter from './PostFilter'
 
 const PostList = ({isFetching, posts}) => (
     <div className="card-panel sv-topic-list">
+        <PostFilter />
         <table className="responsive-table">
             <thead>
                 <tr>

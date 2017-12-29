@@ -5,6 +5,7 @@ import { getPosts } from '../actions/postsActions'
 import PostList from '../components/PostList'
 import { NavLink } from 'react-router-dom'
 import { postComponentReset } from '../actions/postContentActions'
+import moment from 'moment'
 
 class Posts extends React.Component {
     componentDidMount() {
@@ -49,19 +50,22 @@ function mapStateToProps(state) {
         isFetching,
         items: posts,
         isBeingDeleted,
-        isDeleted
+        isDeleted,
+        filter
     } = postList || {
         isFetching: true,
         items: [],
         isBeingDeleted: -1,
-        isDeleted: -1
+        isDeleted: -1,
+        filter: {}
     }
 
     return {
         isFetching,
-        posts,
+        posts: posts.sort((p1, p2) => moment(p2.createdAt).isAfter(p1.createdAt)),
         isBeingDeleted,
-        isDeleted
+        isDeleted,
+        filter
     }
 }
 

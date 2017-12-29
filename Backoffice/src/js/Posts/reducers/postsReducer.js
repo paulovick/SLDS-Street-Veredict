@@ -5,6 +5,7 @@ import {
     REQUEST_POST_DELETE,
     RECEIVE_POST_DELETE
 } from '../actions/postsActions'
+import { POST_FILTER_MODIFIED } from '../actions/postFilterActions'
 import { ROOT_ERROR } from '../../Root/actions';
 
 function postList(
@@ -12,7 +13,8 @@ function postList(
         isFetching: false,
         items: [],
         isBeingDeleted: -1,
-        isDeleted: -1
+        isDeleted: -1,
+        filter: {}
     },
     action
 ) {
@@ -36,6 +38,12 @@ function postList(
                 items: state.items.filter((post) => post.id !== action.postId),
                 isBeingDeleted: -1,
                 isDeleted: action.postId
+            })
+        case POST_FILTER_MODIFIED:
+            return Object.assign({}, state, {
+                filter: Object.assign({}, action.filter, {
+                    [action.field]: action.value
+                })
             })
         case ROOT_ERROR:
             return Object.assign({}, state, {
