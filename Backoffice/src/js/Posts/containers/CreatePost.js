@@ -12,7 +12,7 @@ class CreatePost extends React.Component {
                 <div>
                     <h4><i>Street Veredict <strong>Create Post</strong></i></h4>
                 </div>
-                <PostContent post={postJson} validation={validation} disable={isCreating} />
+                <PostContent post={postJson} validation={validation} disable={isCreating} isCreation={true}/>
                 <button className="sv-fab-bottom-right btn-floating btn-large waves-effect waves-light orange"
                     onClick={() => dispatch(createPostAction(postJson))}
                 >

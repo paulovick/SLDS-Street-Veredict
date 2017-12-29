@@ -26,7 +26,11 @@ function createOrEditPost(
         case POST_COMPONENT_RESET:
             return Object.assign({}, state, {
                 postJson: null,
-                validation: {}
+                validation: {},
+                authors: null,
+                topics: null,
+                authorsInitialized: null,
+                topicsInitialized: null
             })
         case POST_PROPERTY_MODIFIED:
             return Object.assign({}, state, {

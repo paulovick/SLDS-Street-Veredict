@@ -104,17 +104,17 @@ class PostContent extends React.Component {
         dispatch(fetchTopics())
     }
     componentDidUpdate() {
-        const { post, postReceived, authors, topics, authorsInitialized, topicsInitialized, dispatch } = this.props
+        const { post, postReceived, authors, topics, authorsInitialized, topicsInitialized, dispatch, isCreation } = this.props
 
-        if (!authorsInitialized) {
+        if (!authorsInitialized && authors && (postReceived || isCreation)) {
             initializeAuthorInput(this.refs.postAuthorInput, authors, postReceived ? postReceived.author : null, this.handleAuthorOnChange)
-            if (authors) {
+            if (authors && (postReceived || isCreation)) {
                 dispatch(authorsInitializedAction())
             }
         }
-        if (!topicsInitialized) {
+        if (!topicsInitialized && topics && (postReceived || isCreation)) {
             initializeTopicInput(this.refs.postTopicInput, topics, postReceived ? postReceived.topic : null, this.handleTopicOnChange)
-            if (topics) {
+            if (topics && (postReceived || isCreation)) {
                 dispatch(topicsInitializedAction())
             }
         }
@@ -258,7 +258,7 @@ PostContent.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     const { postContentReducer } = state
-    const { post, validation, isFetching, disable } = ownProps
+    const { post, validation, isFetching, disable, isCreation } = ownProps
     const createOrEditPost = postContentReducer ? postContentReducer.createOrEditPost : null
 
     const {
@@ -281,7 +281,8 @@ function mapStateToProps(state, ownProps) {
         authors,
         topics,
         authorsInitialized,
-        topicsInitialized
+        topicsInitialized,
+        isCreation
     }
 } 
 

@@ -17,7 +17,7 @@ class EditPost extends React.Component {
                 <div>
                     <h4><i>Street Veredict <strong>Edit Post</strong></i></h4>
                 </div>
-                <PostContent post={postJson} postReceived={post} validation={validation} disable={isEditing} isFetching={isFetching} />
+                <PostContent post={postJson} postReceived={post} validation={validation} disable={isEditing} isFetching={isFetching} isCreation={false} />
                 <button className="sv-fab-bottom-right btn-floating btn-large waves-effect waves-light orange"
                     onClick={() => dispatch(editPostAction(postJson))}
                 >

@@ -18,7 +18,7 @@ export function rootSuccess(message) {
 function rootErrorAction(message) {
     return {
         type: ROOT_ERROR,
-        success: message
+        error: message
     }
 }
 

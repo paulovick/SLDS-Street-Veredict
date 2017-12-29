@@ -20,11 +20,11 @@ export function validateJson(json) {
         result = result || {}
         result.nameError = true
     }
-    if (!json.authorId) {
+    if (json.authorId === null) {
         result = result || {}
         result.authorError = true
     }
-    if (!json.topicId) {
+    if (json.topicId === null) {
         result = result || {}
         result.topicError = true
     }
